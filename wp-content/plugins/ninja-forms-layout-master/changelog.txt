@@ -1,0 +1,44 @@
+= 1.7.0 =
+* New: Added width and height fields to change label, input, textarea and form size.
+* New: Added error border color option for Ninja Form fields.
+* New: Reuse your form CSS styles. Copy. Paste. Save!
+* Updated: Warning notices fixed in frontend-layout.php.
+* Updated: Default field border size now set to 1px.
+
+= 1.6.0 =
+* New: Added option to disable plugin updates (for Envato theme authors).
+* New: Added option to resize submit buttons.
+* New: Added option to change color for field error message.
+* Updated: Save metabox states after styles tab is saved.
+* Updated: Form style rendering method updated. CSS minification added.
+* Updated: Extra backslash issue fixed with Custom CSS.
+* Updated: Warning notices fixed in frontend-layout.php.
+* Updated: Fixed small JS issue in Ninja Forms Layout Master backend.
+
+= 1.5.0 =
+* New: Column rendering option added. By default any Ninja Form will be still rendered using row-by-row principle.
+* Updated: Issue fixed where last row is not cleared (using clearfix).
+
+= 1.4.0 =
+* New: Button hover styling options added to form visual style editor.
+* Updated: Form field list order bug fixed when switching from/to Layout and Build Your Form tabs.
+* Updated: Clearfix added after each row to force form fields to be properly aligned and displayed.
+* Updated: Field styles applied to number and password fields.
+
+= 1.3.0 =
+* New: Form visual styling options added for Ninja Forms error and success message.
+* New: Option added to remove "Fields marked with a * are required" note.
+* New: Added color picker option for label require symbol (*).
+* Updated: Form Styles tab updated. All items grouped into collapsible metaboxes.
+* Updated: 'Disable CSS' property is now reversed and renamed to 'Enable Form Styles'.
+* Updated: Fixed warning notices shown when Styles tab is saved.
+* Updated: Form CSS Stylesheets optimised.
+* Updated: Ninja Forms - Layout Master add-on documentation updated.
+
+= 1.2.0 =
+* New: ABSPATH checks added for php files (security fix).
+* Updated: Fixed warning notices.
+* Updated: Ninja Forms - Layout Master compatibility fix for Ninja Forms 2.9+ added.
+
+= 1.0.0 =
+* New: Initial release

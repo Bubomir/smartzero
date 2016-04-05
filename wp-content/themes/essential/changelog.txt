@@ -1,0 +1,99 @@
+** Version 1.1.21  **
+	- Fix: version bug in admin widget
+	- Fix: woocommerce 2.2.x compatibility	
+	
+** Version 1.1.20  **
+	- Fix: code cleanup
+	- Fix: woocommerce compatibility issues
+	
+** Version 1.1.19  **
+	- Fix: code cleanup	
+	- Fix: price filter activation issue
+	
+** Version 1.1.18  **
+	- Fix: code cleanup	
+	
+** Version 1.1.17  **
+	- Fix: code cleanup
+	- Fix: json issue in Essential Options
+	
+** Version 1.1.16  **
+	- Fix: changing images on variable product
+	- Fix: uploading theme images in wp 3.9
+	
+** Version 1.1.15  **
+   	- Added: option for sorting categories on front page
+   	- Added: compatibility with woocommerce 2.1+
+
+** Version 1.1.14  **
+   	- Fix: var_dump problem when trying to add new page/post
+	
+** Version 1.1.13  **
+   	- Fix: Slider displaying posts		
+
+** Version 1.1.12  **
+- Fix: Slider displaying specifics posts	
+	
+** Version 1.1.11  **
+   	- Fix: Php memory limit fix when having many products, posts and pages	
+	
+** Version 1.1.10  **
+	- Fix: bug on contact metabox
+
+** Version 1.1.9  **	
+	- Fix: mulitlanuage in top menu
+	- Fix: variable products on sale
+
+** Version 1.1.8  **	
+	- Fix: several minor css corrections
+	- Fix: Youtube ssl link
+	
+** Version 1.1.7  **	
+	- Fix: small css bugs
+	- Fix: active tab on home page
+	- Fix: including custom font css bug
+	
+** Version 1.1.6  **
+	- Added feature: set active tab on home page
+	- Added feature: sort product blocks on home page
+	- Added feature: upload and show favicon
+	- Fix: background increment set to none
+	- Fix: homepage content overflowing on responsive design
+	- Fix: compare page width
+	- Fix: mobile show logo 
+	
+** Version 1.1.5  **
+	- Added feature: set width and height to youtube shortcode
+	- Added feature: shortcodes in theme options textareas
+	- Fix: mobile menu under header problem when custom logo picture is present
+	- Fix: issue with having more then one megamenu
+
+** Version 1.1.4  **
+	- Added feature: do shorcodes in widgets
+	- Added feature: shortcode hidden
+	- Added feature: styled selectbox (jQuery Selectbox plugin) 
+	- Fix: bug with default sidebar position
+	- Fix: css bug, products on tablet resolution
+	- Fix: cart dropdown css color bug
+	- Fix: product variation prices
+	- Fix: mobile menu positioning 
+
+** Version 1.1.3  **
+	- Fix: style.css strong styling
+	- Fix: product gallery thumbnails  not showing correctly
+	- Added Social icons
+
+** Version 1.1.2  **
+	- Fix: product gallery issue	
+
+** Version 1.1.1  **
+	- Fix: problem with theme metaboxes
+   	
+** Version 1.1  **
+	- Added feature: use logo image instead of site title and description
+	- Fix: search post type bug in admin area
+	- Fix: javascript problems in configuring slider options
+	- Fix: minor css #content.wide, .layout-full #content margin problem 
+	
+** Version 1.0.0 (15 October 2013) **
+   	- Initial release

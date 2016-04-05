@@ -1,0 +1,101 @@
+/* body color */
+body {
+	background-color: #fff
+}
+/* link color */
+a, .linkcolor, .bottom-footer .widget-title, .woocommerce-breadcrumb a, .sbOptions a:hover,.sbOptions a:focus,.sbOptions a.sbFocus, .sbOptions a:link, .sbOptions a:visited , #sidebar .widget a.sbToggle  {
+	color: #FF9F7E
+}
+.linkcolor-as-bg {
+	background: #FF9F7E
+}
+
+/* text color */
+body, p, .summary {
+	color: #000
+}
+/* main image */
+.main-color {
+	background-image: url("../images/bg-orange.jpg");
+	color: #fff;
+	background-repeat: no-repeat;
+	background-position: center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover !imortant;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/bg-orange.jpg', sizingMethod='scale');
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/bg-orange.jpg', sizingMethod='scale')";
+}
+/* main color */
+
+.woocommerce div.product .product_title, .woocommerce #content div.product .product_title, .woocommerce-page div.product .product_title, .woocommerce-page #content div.product .product_title, .woocommerce ul.products li.product h3, .woocommerce-page ul.products li.product h3, #primary-menu ul > li li:hover > a, #tab-description h2, .upper-footer .widget-title, #primary-menu a {
+	color: #BE2A0D
+}
+
+#primary-menu .megamenu > ul > li > a, #topmenu ul > li li:hover, #primary-menu ul > li li:hover > a, .woocommerce div.product form.cart .button, .woocommerce #content div.product form.cart .button, .woocommerce-page div.product form.cart .button, .woocommerce-page #content div.product form.cart .button, .woocommerce .widget_price_filter .price_slider_amount .button, .woocommerce-page .widget_price_filter
+.price_slider_amount .button, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button, .woocommerce #respond input#submit, .woocommerce #content input.button, .woocommerce-page a.button, .woocommerce-page button.button, .woocommerce-page input.button, .woocommerce-page #respond input#submit, .woocommerce-page #content input.button, .woocommerce span.onsale, .woocommerce-page span.onsale,.woocommerce span.winning, .woocommerce-page span.winning, .main-color {
+	background-color: #BE2A0D;
+	color: #fff
+}
+#topmenu ul > li li:hover a, #topmenu ul > li li:hover h3 {color:#fff}
+
+footer .upper-footer .widget > ul > li {
+	border-bottom-color: #BE2A0D;
+}
+
+/* color 2 */
+.tab_navigation li a, .woocommerce div.product .woocommerce-tabs ul.tabs li.active, .woocommerce #content div.product .woocommerce-tabs ul.tabs li.active, .woocommerce-page div.product .woocommerce-tabs ul.tabs li.active, .woocommerce-page #content div.product .woocommerce-tabs ul.tabs li.active {
+	color: #1C232D
+}
+.related.products.carusel h2, .tab_navigation li.active a, .woocommerce .summary div[itemprop='offers'], #primary-menu .megamenu > ul > li > a:hover, .no-tab h2.title span, .title-area select, #sidebar .widget select, #compare_table .image .price, .bg-color2 , .da-slide .da-img span.price, #topmenu li.essential-cart .qc-buttons, .variations_form .single_variation,  .sbHolder, .sbSelector:link, .sbSelector:visited, .sbSelector:hover, .sbOptions, #sidebar .widget a.sbSelector{
+	background-color: #1C232D;
+	color: #FF9F7E
+}
+#primary-menu .sub-menu > li:hover > a, #primary-menu .megamenu > ul > li > a {
+	color: #FF9F7E
+}
+.tab_navigation, .no-tab h2.title, #primary-menu > ul > li > ul, #primary-menu .megamenu > ul > li > a {
+	border-bottom-color: #1C232D;
+}
+
+/* color3 */
+.action-buttons a > span a, .contact-box-wrapper h3, h3, .color3 {
+	color: #1F2C45
+}
+.woocommerce ul.products li.product .price, .widget.woocommerce .amount, .woocommerce-page ul.products li.product .price, .action-buttons > span, .woocommerce ul.products .added_to_cart, .comments-title, #reply-title, #compare_table .compared-product li.price,#topmenu .quantity, .bg-color3 {
+	background-color: #1F2C45;
+	color: #fff
+}
+#primary-menu > ul > li > ul, #primary-menu ul > li > ul ul {
+	border-bottom-color: #1F2C45
+}
+/* color 4 */
+.woocommerce-page, .woocommerce div.product .product_title, .woocommerce #content div.product .product_title, .woocommerce-page div.product .product_title, .woocommerce-page #content div.product .product_title, .woocommerce ul.products li.product h3, .woocommerce-page ul.products li.product h3, #primary-menu ul > li li:hover > a, #tab-description h2, .woocommerce ul.products li.product:hover h3, .woocommerce-page ul.products li.product:hover h3, .color4 {
+	color: #1F2C45
+}
+.circle-wrapper span, .woocommerce .widget_price_filter .ui-slider .ui-slider-range, .woocommerce-page .widget_price_filter .ui-slider .ui-slider-range, .bg-color4 {
+	background-color: #1F2C45;
+	color: #fff
+}
+
+/* main image fc */
+.upper-footer .widget-title, .upper-footer  .widget-area-box a, -main-image-font-color {
+	color: #FFF
+}
+
+/* header gradient */
+#content article .entry-title, .stripe, .headergradient, #compare_table ul.compared-product .title {
+	background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjklIiBzdHlsZT0ic3RvcC1jb2xvcjojMjAyQjNCOyIgLz48c3RvcCBvZmZzZXQ9Ijc3JSIgc3R5bGU9InN0b3AtY29sb3I6IzBDMTExQTsiIC8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNncmFkaWVudCkiIGhlaWdodD0iMTAwJSIgd2lkdGg9IjEwMCUiIC8+PC9zdmc+);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(9%, #202B3B), color-stop(77%, #0C111A));
+	background: -moz-linear-gradient(top,#202B3B 9%,#0C111A 77%);
+	background: -webkit-linear-gradient(top,#202B3B 9%,#0C111A 77%);
+	background: -o-linear-gradient(top,#202B3B 9%,#0C111A 77%);
+	background: -ms-linear-gradient(top,#202B3B 9%,#0C111A 77%);
+	background: linear-gradient(top,#202B3B 9%,#0C111A 77%);
+	color: #FFFFFF
+}
+#content article .entry-title a, .stripe p, #content article .comments-link a, #content article .comments-link .icon, .headergradient a, #compare_table ul.compared-product .title a {
+	color: #fff
+}
+

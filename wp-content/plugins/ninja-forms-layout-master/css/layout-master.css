@@ -1,0 +1,36 @@
+.bti_layout_master .form-table {
+	margin-left: 10px;
+}
+
+.gridster>* {
+	margin: 0px;
+}
+
+.gridster {
+	-webkit-transition: opacity .6s;
+	-moz-transition: opacity .6s;
+	-o-transition: opacity .6s;
+	-ms-transition: opacity .6s;
+	transition: opacity .6s;
+}
+
+.gridster .preview-holder {
+	border: none!important;
+	background: #ccc;
+}
+
+.gridster ul li div {
+	background: #fff;;
+	border: 1px solid #dfdfdf;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	display: block;
+	padding: 12px 10px 10px 10px;
+	color: #000;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.gridster ul li div span {
+	font-weight: normal;
+}

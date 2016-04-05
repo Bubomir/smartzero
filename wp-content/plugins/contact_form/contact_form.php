@@ -1,0 +1,128 @@
+<?php
+
+/*
+Plugin Name: Contact Form
+Description: shortcode [contact_form]
+Version: 1.0
+Author: Biros, Igonda
+ */
+
+/**
+ * Register with hook 'wp_enqueue_scripts', which can be used for front end CSS and JavaScript
+ */
+
+/**
+ * Enqueue plugin style-file
+ */
+
+function wptuts_styles_with_the_lot()
+{
+    // Register the style like this for a plugin:
+    if (!is_admin()) {
+
+        wp_register_style('contact_style', plugins_url('/css/style.css', __FILE__), array(), '', 'all');
+        wp_enqueue_style('contact_style');
+
+        wp_register_script('bootstrap_js', plugins_url('/js/bootstrap.min.js', __FILE__), array('jquery'), '', true);
+        wp_enqueue_script('bootstrap_js');
+
+        wp_register_script('contact_form_js', plugins_url('/js/contact_form.js', __FILE__), array('jquery'), '', true);
+        wp_enqueue_script('contact_form_js');
+
+        // For either a plugin or a theme, you can then enqueue the style:
+    }
+
+}
+add_action('wp_enqueue_scripts', 'wptuts_styles_with_the_lot');
+
+function html_form_code()
+{
+    include 'template.php';
+}
+function parser_include()
+{
+    if (!function_exists('file_get_html')) {
+        require_once WP_CONTENT_DIR . '/plugins/contact_form/simple_html_dom.php';
+    }
+}
+
+function get_product_type_parse()
+{
+    $html_select = "<select id='id-device_type' name='cf-device_type' class='form-control' required autocomplete='off'> <option value='null' >-- Vyberte si jednu z možností --</option>";
+    foreach (glob(WP_CONTENT_DIR . '/plugins/contact_form/devices/*.txt') as $filename) {
+
+        // parsing data from txt file
+        $data_parse['typ'] = basename($filename, '.txt');
+        $html_select .= "<option label=" . $data_parse['typ'] . ">" . $data_parse['typ'] . "</option>";
+    }
+
+    $html_select .= "</select>";
+    return $html_select;
+}
+
+function insert_to_database()
+{
+    include 'wp-content/plugins/contact_form/dbconnect.php';
+
+    // if the submit button is clicked, insert date to the database
+    if (isset($_POST['cf-submitted'])) {
+        $data = array();
+
+        $data['firstname']       = sanitize_text_field($_POST["cf-firstname"]);
+        $data['surname']         = sanitize_text_field($_POST["cf-surname"]);
+        $data['email']           = sanitize_text_field($_POST["cf-email"]);
+        $data['phone']           = sanitize_text_field($_POST["cf-phone"]);
+        $data['country']         = sanitize_text_field($_POST["cf-country"]);
+        $data['city']            = sanitize_text_field($_POST["cf-city"]);
+        $data['street']          = sanitize_text_field($_POST["cf-street"]);
+        $data['zip']             = sanitize_text_field($_POST["cf-zip"]);
+        $data['payment_method']  = 'Platba na dobierku';
+        $data['total_price']     = '10';
+        $data['currency_code']   = 'EUR';
+        $data['date']            = date('Y-m-d H:i:s');
+        $data['order_status_id'] = '1'; // 1 = Pending more in openCart DB table oc_order_status
+        $data['device_type']     = sanitize_text_field($_POST["cf-device_type"]);
+        $data['device_model']    = sanitize_text_field($_POST["cf-device_model"]);
+        $data['device_quantity'] = sanitize_text_field($_POST["cf-device_quantity"]);
+        $data['tax']             = '0';
+        $data['store_url']       = 'http://www.smartzero-opencart.dev/';
+        $data['shipping_code']   = '[]';
+
+        $data['product_id'] = '30';
+
+        foreach ($data as $value) {
+
+            if ($value == null) {
+                echo 'prazdne ' . $value . '<br>';
+            }
+            //echo $value . '<br>';
+        }
+
+        $sql_order = "INSERT INTO oc_order (firstname, lastname, email, telephone, payment_firstname, payment_lastname, payment_country, payment_city , payment_address_1, payment_postcode, payment_method, shipping_firstname, shipping_lastname, shipping_address_1, shipping_city, shipping_country , total, currency_code, date_added, date_modified, order_status_id, store_url, shipping_code ) VALUES ('" . $data['firstname'] . "','" . $data['surname'] . "','" . $data['email'] . "','" . $data['phone'] . "','" . $data['firstname'] . "','" . $data['surname'] . "','" . $data['country'] . "','" . $data['city'] . "','" . $data['street'] . "','" . $data['zip'] . "','" . $data['payment_method'] . "','" . $data['firstname'] . "','" . $data['surname'] ."','" .$data['street']. "','".$data['city'].  "','".$data['country']."','" . $data['total_price'] . "','" . $data['currency_code'] . "','" . $data['date'] . "','" . $data['date'] . "','" . $data['order_status_id'] . "','" . $data['store_url'] . "','" . $data['shipping_code'] . "')";
+
+        if ($conn->query($sql_order) === true) {
+            $last_id = $conn->insert_id;
+
+            $sql_order_product = "INSERT INTO oc_order_product (order_id, product_id, name, model, quantity, price ,total ,tax) VALUES ('" . $last_id . "', '" . $data['product_id'] . "','" . $data['device_type'] . "', '" . $data['device_model'] . "', '" . $data['device_quantity'] . "', '" . $data['total_price'] . "', '" . $data['total_price'] . "', '" . $data['tax'] . "')";
+            if ($conn->query($sql_order_product) === true) {
+
+            } else {
+                echo "Error: " . $sql_order_product . "<br>" . $conn->error;
+            }
+        } else {
+            echo "Error: " . $sql_order . "<br>" . $conn->error;
+        }
+    }
+}
+
+function cf_shortcode()
+{
+    ob_start();
+
+    html_form_code();
+    insert_to_database();
+
+    return ob_get_clean();
+}
+
+add_shortcode('contact_form', 'cf_shortcode');
