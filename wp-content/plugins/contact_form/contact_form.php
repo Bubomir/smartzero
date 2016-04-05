@@ -98,12 +98,64 @@ function insert_to_database()
             //echo $value . '<br>';
         }
 
-        $sql_order = "INSERT INTO oc_order (firstname, lastname, email, telephone, payment_firstname, payment_lastname, payment_country, payment_city , payment_address_1, payment_postcode, payment_method, shipping_firstname, shipping_lastname, shipping_address_1, shipping_city, shipping_country , total, currency_code, date_added, date_modified, order_status_id, store_url, shipping_code ) VALUES ('" . $data['firstname'] . "','" . $data['surname'] . "','" . $data['email'] . "','" . $data['phone'] . "','" . $data['firstname'] . "','" . $data['surname'] . "','" . $data['country'] . "','" . $data['city'] . "','" . $data['street'] . "','" . $data['zip'] . "','" . $data['payment_method'] . "','" . $data['firstname'] . "','" . $data['surname'] ."','" .$data['street']. "','".$data['city'].  "','".$data['country']."','" . $data['total_price'] . "','" . $data['currency_code'] . "','" . $data['date'] . "','" . $data['date'] . "','" . $data['order_status_id'] . "','" . $data['store_url'] . "','" . $data['shipping_code'] . "')";
+        $orders_data = array(
+            'firstname' => $data['firstname'],
+            'lastname' => $data['surname'],
+            'email' => $data['email'],
+            'telephone' => $data['phone'],
+            'payment_firstname' => $data['firstname'],
+            'payment_lastname' => $data['surname'],
+            'payment_country' => $data['country'],
+            'payment_city' => $data['city'],
+            'payment_address_1' => $data['street'],
+            'payment_postcode' => $data['zip'],
+            'payment_method' => $data['payment_method'],
+            'shipping_firstname' => $data['firstname'],
+            'shipping_lastname' => $data['surname'],
+            'shipping_city' => $data['city'],
+            'shipping_address_1' => $data['street'],
+            'shipping_country' => $data['country'],
+            'total' => $data['total_price'],
+            'currency_code' => $data['currency_code'],
+            'date_added' => $data['date'],
+            'date_modified' => $data['date'],
+            'order_status_id' => $data['order_status_id'],
+            'store_url' => $data['store_url'],
+            'shipping_code' => $data['shipping_code']
+        );
 
+        foreach ($orders_data as $idx=>$order_data) {
+            $escaped_values[$idx] = "'".$order_data."'";
+        }
+        $columns_order_data = implode(", ", array_keys($escaped_values));
+        $values_order_data  = implode(", ", $escaped_values);
+
+        $sql_order = "INSERT INTO oc_order ($columns_order_data) VALUES ($values_order_data)";
+
+        
         if ($conn->query($sql_order) === true) {
             $last_id = $conn->insert_id;
 
-            $sql_order_product = "INSERT INTO oc_order_product (order_id, product_id, name, model, quantity, price ,total ,tax) VALUES ('" . $last_id . "', '" . $data['product_id'] . "','" . $data['device_type'] . "', '" . $data['device_model'] . "', '" . $data['device_quantity'] . "', '" . $data['total_price'] . "', '" . $data['total_price'] . "', '" . $data['tax'] . "')";
+
+            $order_data_products = array(
+                'order_id' => $last_id,
+                'product_id' => $data['product_id'],
+                'name' => $data['device_type'],
+                'model' => $data['device_model'],
+                'quantity' =>  $data['device_quantity'],
+                'price' => $data['total_price'],
+                'total' => $data['total_price'],
+                'tax' => $data['tax']
+            );
+
+            foreach ($order_data_products as $idx=>$order_data_product) {
+                $escaped_values_product[$idx] = "'".$order_data_product."'";
+            }
+
+            $columns_order_data_product = implode(", ", array_keys($escaped_values_product));
+            $values_order_data_product  = implode(", ", $escaped_values_product);
+
+            $sql_order_product = "INSERT INTO oc_order_product ($columns_order_data_product ) VALUES ($values_order_data_product)";
             if ($conn->query($sql_order_product) === true) {
 
             } else {
