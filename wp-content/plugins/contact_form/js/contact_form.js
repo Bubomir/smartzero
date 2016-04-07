@@ -79,8 +79,9 @@ function getElementValue() {
                 for (var i = data.length - 1; i >= 0; i--) {
                     
                     var option = document.createElement("option");
-                    option.value = data[i].price;
+                    option.value = data[i].product_id;
                     option.text = data[i].model;
+                    option.setAttribute('data-price', data[i].price);
                     dropdown_object.add(option);
                 }
             }
@@ -220,8 +221,9 @@ function checkIfFilled(ev) {
     var deviceModel = jQuery('select[name=cf-device_model] option:selected');
     var quantity = jQuery('input[name=cf-device_quantity]');
     var ID_ZERO = '0';
+
     if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO) {
-        showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].value);
+        showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'));
         document.getElementsByClassName('validation')[0].innerHTML = "";
         jQuery('#myModal').modal('show');
     } else {
