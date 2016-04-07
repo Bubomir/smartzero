@@ -47,16 +47,21 @@ function parser_include()
 }
 
 function get_product_type_parse()
-{
+{   
+    include 'wp-content/plugins/contact_form/dbconnect.php';
+
+    $fetch = "SELECT * FROM oc_category_description ORDER BY name ASC";
+    $result = $conn->query($fetch);
+
     $html_select = "<select id='id-device_type' name='cf-device_type' class='form-control' required autocomplete='off'> <option value='null' >-- Vyberte si jednu z možností --</option>";
-    foreach (glob(WP_CONTENT_DIR . '/plugins/contact_form/devices/*.txt') as $filename) {
-
-        // parsing data from txt file
-        $data_parse['typ'] = basename($filename, '.txt');
-        $html_select .= "<option label=" . $data_parse['typ'] . ">" . $data_parse['typ'] . "</option>";
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $html_select .= "<option value=".$row["category_id"]." label=" . $row["name"] . ">" . $row["name"] . "</option>";
+        }
     }
-
     $html_select .= "</select>";
+    $conn->close();
     return $html_select;
 }
 
@@ -165,6 +170,7 @@ function insert_to_database()
             echo "Error: " . $sql_order . "<br>" . $conn->error;
         }
     }
+    $conn->close();
 }
 
 function cf_shortcode()
