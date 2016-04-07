@@ -71,13 +71,16 @@ function getElementValue() {
 
             function getDevicesModel (data){
                 //remove previout option element
+
                 for (var i = dropdown_object.length - 1; i >= 0; i--) {
                     dropdown_object.remove(i);
                 }
                 //create new element by parsing from .txt -> php
                 for (var i = data.length - 1; i >= 0; i--) {
+                    
                     var option = document.createElement("option");
-                    option.text = data[i];
+                    option.value = data[i].price;
+                    option.text = data[i].model;
                     dropdown_object.add(option);
                 }
             }
@@ -182,13 +185,14 @@ function onInputBlur(ev) {
     }
 }
 //Callculating all action in form
-function showBill(devictTypVal, deviceModelVal, quantityVal) {
+function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice) {
+
     var dropdownCountry = document.getElementById('country-sz');
     var billTransport = document.getElementById('bill-transport-sz');
     var billFinalPrice = document.getElementById('bill-summary-price-sz');
     document.getElementById('bill-device-name-sz').innerHTML = 'Model: <br>' + devictTypVal + " " + deviceModelVal;
     document.getElementById('bill-quantity-sz').innerHTML = 'Počet kusov: <br>' + quantityVal + " ks";
-    document.getElementById('bill-price-sz').innerHTML = 'Cena: <br>' + (quantityVal * 9.99) + " €";
+    document.getElementById('bill-price-sz').innerHTML = 'Cena: <br>' + (quantityVal * devicePrice) + " €";
     //Listener for country 
     dropdownCountry.addEventListener('change', function() {
         switch (dropdownCountry.value) {
@@ -200,12 +204,12 @@ function showBill(devictTypVal, deviceModelVal, quantityVal) {
             case "Slovenská republika":
                 billTransport.innerHTML = "ZADARMO";
                 //Final price for SK
-                billFinalPrice.innerHTML = (quantityVal * 9.99) + " €";
+                billFinalPrice.innerHTML = (quantityVal * devicePrice) + " €";
                 break;
             case "Česká republika":
                 billTransport.innerHTML = "+2 €";
                 //Final price for CZ
-                billFinalPrice.innerHTML = (2 + quantityVal * 9.99) + " €";
+                billFinalPrice.innerHTML = (2 + quantityVal * devicePrice) + " €";
                 break;
         }
     });
@@ -217,7 +221,7 @@ function checkIfFilled(ev) {
     var quantity = jQuery('input[name=cf-device_quantity]');
     var ID_ZERO = '0';
     if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO) {
-        showBill(deviceType[0].text, deviceModel[0].value, quantity[0].value);
+        showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].value);
         document.getElementsByClassName('validation')[0].innerHTML = "";
         jQuery('#myModal').modal('show');
     } else {

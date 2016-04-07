@@ -22,7 +22,7 @@ if (isset($_POST['categoryID']) && !empty($_POST['categoryID'])) {
     if ($result_products->num_rows > 0) {
         // output data of each row
         while($row = $result_products->fetch_assoc()) {
-           array_push($devices_models, $row['model']);
+           array_push($devices_models, $row);
         }
     }
 
