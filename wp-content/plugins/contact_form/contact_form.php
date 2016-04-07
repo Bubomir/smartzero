@@ -39,17 +39,11 @@ function html_form_code()
 {
     include 'template.php';
 }
-function parser_include()
-{
-    if (!function_exists('file_get_html')) {
-        require_once WP_CONTENT_DIR . '/plugins/contact_form/simple_html_dom.php';
-    }
-}
 
 function get_product_type_parse()
 {   
-    include 'wp-content/plugins/contact_form/dbconnect.php';
-
+    include WP_PLUGIN_DIR.'/contact_form/dbconnect.php';
+   
     $fetch = "SELECT * FROM oc_category_description ORDER BY name ASC";
     $result = $conn->query($fetch);
 
@@ -67,10 +61,11 @@ function get_product_type_parse()
 
 function insert_to_database()
 {
-    include 'wp-content/plugins/contact_form/dbconnect.php';
-
+    include WP_PLUGIN_DIR.'/contact_form/dbconnect.php';
+    
     // if the submit button is clicked, insert date to the database
     if (isset($_POST['cf-submitted'])) {
+
         $data = array();
 
         $data['firstname']       = sanitize_text_field($_POST["cf-firstname"]);
@@ -191,15 +186,41 @@ function insert_to_database()
         if (!$conn->query($sql_order_total) === true) {
             echo "Error: " . $sql_order_total . "<br>" . $conn->error;
         }
-       
+        ob_start();
+        include WP_PLUGIN_DIR.'/contact_form/template_mail.php';
+        $mail_message = ob_get_clean();
+
+        deliver_mail($email, $last_id, $mail_message);
     }
     $conn->close();
+}
+
+function deliver_mail($email, $order_number, $mail_message)
+{    
+    add_filter( 'wp_mail_content_type', 'wpdocs_set_html_mail_content_type' );
+
+    $multiple_recipients = array('bubomirxxx@gmail.com',$email);
+    $subject   = 'Smartzero - Vaša objednávka bola zaevidovaná pod číslom: '.$order_number;
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= "From: Smartzero.sk <smartzero@smartzero.sk>" . "\r\n";
+   
+    // If email has been process for sending, display a success message
+    if (!wp_mail($multiple_recipients, $subject, $mail_message, $headers)) {
+        echo 'Pri objednávke sa vyskytla chyba prosím kontaktujte administrátora';
+    } 
+
+    // Reset content-type to avoid conflicts -- https://core.trac.wordpress.org/ticket/23578
+    remove_filter( 'wp_mail_content_type', 'wpdocs_set_html_mail_content_type' );
+ 
+}
+function wpdocs_set_html_mail_content_type() {
+    return 'text/html';
 }
 
 function cf_shortcode()
 {
     ob_start();
-
     html_form_code();
     insert_to_database();
 
