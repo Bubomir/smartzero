@@ -1,20 +1,31 @@
 <?php
-if (isset($_POST['deviceType']) && !empty($_POST['deviceType'])) {
-    include 'simple_html_dom.php';
+if (isset($_POST['categoryID']) && !empty($_POST['categoryID'])) {
+    include 'dbconnect.php';
 
-    $typ        = $_POST['deviceType'];
-    $data_fetch = array();
-    $data_parse = array();
-    $data_json  = array();
-    foreach (glob('devices/' . $typ . '.txt') as $filename) {
+    $category_id  = $_POST['categoryID'];
+ 
+    $fetch_products_id = "SELECT * FROM oc_product_to_category WHERE category_id = '$category_id' ";
+    $result_products_id = $conn->query($fetch_products_id);
 
-        $data               = file_get_html($filename);
-        $data_fetch['data'] = explode(';', $data);
-
-        foreach ($data_fetch['data'] as $values) {
-            list($data_parse['product_id'], $data_parse['model']) = explode('-', $values);
-            array_push($data_json, $data_parse);
+    $product_id = array();
+     if ($result_products_id->num_rows > 0) {
+        // output data of each row
+        while($row = $result_products_id->fetch_assoc()) {
+           array_push($product_id, $row['product_id']);
         }
     }
-    echo json_encode($data_json);
+    $product_id = implode(',', $product_id);
+    $fetch_products = "SELECT * FROM oc_product WHERE product_id IN  ($product_id) ";
+    $result_products = $conn->query($fetch_products);
+    
+    $devices_models = array();
+    if ($result_products->num_rows > 0) {
+        // output data of each row
+        while($row = $result_products->fetch_assoc()) {
+           array_push($devices_models, $row['model']);
+        }
+    }
+
+    $conn->close();
+    echo json_encode($devices_models);
 }

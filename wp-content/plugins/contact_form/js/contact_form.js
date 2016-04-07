@@ -55,32 +55,34 @@ function getElementValue() {
     jQuery('select[name=cf-device_type]').change(function(event) {
         var dropdown_object = document.getElementById('id-device_model');
         if (jQuery('select[name=cf-device_type] option:selected').text() != ID_NULL) {
-            var deviceTypePicked = jQuery('select[name=cf-device_type] option:selected').text();
-            //ajax for getting parsing data 
-            var ajaxResponse = jQuery.ajax({
+            var deviceTypePicked = jQuery('select[name=cf-device_type] option:selected').val();
+            //ajax for getting data 
+            jQuery.ajax({
                 url: 'wp-content/plugins/contact_form/ajax_device_model.php',
                 data: {
-                    deviceType: deviceTypePicked
+                    categoryID: deviceTypePicked
                 },
                 type: 'post',
                 dataType: 'json',
-                async: false,
                 success: function(output) {
-                    return output;
+                    getDevicesModel(output);
                 }
             });
-            var parse_data = JSON.parse(ajaxResponse.responseText);
-            //remove previout option element
-            for (var i = dropdown_object.length - 1; i >= 0; i--) {
-                dropdown_object.remove(i);
+
+            function getDevicesModel (data){
+                //remove previout option element
+                for (var i = dropdown_object.length - 1; i >= 0; i--) {
+                    dropdown_object.remove(i);
+                }
+                //create new element by parsing from .txt -> php
+                for (var i = data.length - 1; i >= 0; i--) {
+                    var option = document.createElement("option");
+                    option.text = data[i];
+                    dropdown_object.add(option);
+                }
             }
-            //create new element by parsing from .txt -> php
-            for (var i = parse_data.length - 1; i >= 0; i--) {
-                var option = document.createElement("option");
-                option.text = parse_data[i].model;
-                dropdown_object.add(option);
-            }
-        } else {
+        } 
+        else {
             //remove previout option element
             for (var i = dropdown_object.length - 1; i >= 0; i--) {
                 dropdown_object.remove(i);
@@ -215,7 +217,7 @@ function checkIfFilled(ev) {
     var quantity = jQuery('input[name=cf-device_quantity]');
     var ID_ZERO = '0';
     if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO) {
-        showBill(deviceType[0].value, deviceModel[0].value, quantity[0].value);
+        showBill(deviceType[0].text, deviceModel[0].value, quantity[0].value);
         document.getElementsByClassName('validation')[0].innerHTML = "";
         jQuery('#myModal').modal('show');
     } else {
