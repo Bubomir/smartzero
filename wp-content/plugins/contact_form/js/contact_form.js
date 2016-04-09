@@ -2,9 +2,10 @@
 var ID_NULL = 'null';
 //Inicialization function must run every time when page is laoded
 (function() {
+    //conter for iteration ID, add dropdown element 
     var counterElements = 0;
     //it will get all value from txt document
-    getElementValue(counterElements);
+    getElementValue(counterElements, counterElements);
     document.getElementById('button_order-sz').addEventListener('click', function() {checkIfFilled(counterElements);});
     //document.getElementById("country-sz").selectedIndex = -1;
     // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
@@ -54,20 +55,22 @@ var ID_NULL = 'null';
     
     document.getElementById('addDropDown').addEventListener('click', function(){ counterElements = addDropDown(dropDownElement, counterElements)});
     document.getElementById('removeDropDown').addEventListener('click', function(){counterElements = removeDropDown(counterElements)});
+
+    addListernerDropDown(counterElements);
 })();
 
-function getElementValue(counterElements) {
-    console.log('tes', counterElements);
-    var ID_NULL = '-- Vyberte si jednu z možností --';
-    jQuery('select[name=cf-device_type]').change(function(event) {
-        var dropdown_object = document.getElementById('id-device_model');
-        if (jQuery('select[name=cf-device_type] option:selected').text() != ID_NULL) {
-            var deviceTypePicked = jQuery('select[name=cf-device_type] option:selected').val();
+function getElementValue(product_id,counterElements) {
+    var ID_NULL = 0;
+    var ID_VYBERTE_MOZNOST = '-- Vyberte si jednu z možností --';
+    
+        var dropdown_object = document.getElementById('id-device_model-'+(counterElements));
+        if (product_id != ID_NULL) {
+            
             //ajax for getting data 
             jQuery.ajax({
                 url: 'wp-content/plugins/contact_form/ajax_device_model.php',
                 data: {
-                    categoryID: deviceTypePicked
+                    categoryID: product_id
                 },
                 type: 'post',
                 dataType: 'json',
@@ -92,7 +95,7 @@ function getElementValue(counterElements) {
                     dropdown_object.add(option);
                 }
             }
-        } 
+        }
         else {
             //remove previout option element
             for (var i = dropdown_object.length - 1; i >= 0; i--) {
@@ -100,11 +103,11 @@ function getElementValue(counterElements) {
             }
             //create defalut element
             var option = document.createElement("option");
-            option.text = ID_NULL;
+            option.text = ID_VYBERTE_MOZNOST;
             option.value = 'null';
             dropdown_object.add(option);
         }
-    });
+    
 }
 //registering only numbers pushed on keyboard
 function AllowOnlyNumbers(e) {
@@ -225,19 +228,28 @@ function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice) {
 //Check if fields are filled
 function checkIfFilled(counterElements) {
 
-    for (var i = 0; i < counterElements; i++) {
-        var deviceType = jQuery('select[name=cf-device_type-'+i+'] option:selected');
-        var deviceModel = jQuery('select[name=cf-device_model-'+i+'] option:selected');
-        var quantity = jQuery('input[name=cf-device_quantity-'+i+']');
+    canShow = false;
+    for (var i = 0; i <= counterElements; i++) {
+        var deviceType = jQuery('select[name=cf-device_type-'+(i)+'] option:selected');
+        var deviceModel = jQuery('select[name=cf-device_model-'+(i)+'] option:selected');
+        var quantity = jQuery('input[name=cf-device_quantity-'+(i)+']');
         var ID_ZERO = '0';
+        
 
         if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO) {
-            showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'));
-            document.getElementsByClassName('validation')[0].innerHTML = "";
-            jQuery('#myModal').modal('show');
-        } else {
-            document.getElementsByClassName('validation')[0].innerHTML = "Všetky polia musia byť vyplnené!!!";
+            canShow = true;
         }
+        else{
+            canShow = false;
+        } 
+    }
+    if(canShow){
+        showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'));
+        document.getElementsByClassName('validation')[0].innerHTML = "";
+        jQuery('#myModal').modal('show');
+    }
+    else{
+        document.getElementsByClassName('validation')[0].innerHTML = "Všetky polia musia byť vyplnené!!!";
     }
 
 }
@@ -271,6 +283,7 @@ function addDropDown(dropDownElement, counterElements){
           if(!jQuery('#devicePicker-'+(counterElements+1)).length && counterElements < 4){
               jQuery(dropDownElement.outerHTML).insertAfter('#devicePicker-'+counterElements);
               counterElements++;   
+              addListernerDropDown(counterElements);
           } 
     return  counterElements;    
 }
@@ -283,4 +296,12 @@ function removeDropDown(lastDropdownId){
     }
 
     return lastDropdownId;
+}
+
+function addListernerDropDown(counterElements) {
+    var dropdownDeviceType = document.getElementById('id-device_type-'+(counterElements));
+    dropdownDeviceType.addEventListener('change', function(){
+        getElementValue(dropdownDeviceType.value, counterElements);
+    });
+    
 }
