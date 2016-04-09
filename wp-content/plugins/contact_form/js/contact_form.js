@@ -50,11 +50,18 @@ var ID_NULL = 'null';
     //Adding listeners for click event
     
     var dropDownElement =  document.getElementById('devicePicker-0').cloneNode(true);
-    
-    document.getElementById('addDropDown').addEventListener('click', function(){ counterElements = addDropDown(dropDownElement, counterElements)});
-    document.getElementById('removeDropDown').addEventListener('click', function(){counterElements = removeDropDown(counterElements)});
+    var billLinesElement = document.getElementById('id_contact-section-sz-0').cloneNode(true);  
+
+    document.getElementById('addDropDown').addEventListener('click', function(){ 
+        counterElements = addDropDown(dropDownElement, billLinesElement, counterElements);
+    });
+    document.getElementById('removeDropDown').addEventListener('click', function(){
+        counterElements = removeDropDown(counterElements);
+    });
 
     addListernerDropDown(counterElements);
+
+
 })();
 
 function getElementValue(product_id,counterElements) {
@@ -171,8 +178,10 @@ function numberIncrement(ev) {
         ev.target.parentNode.firstChild.nextSibling.value = 0;
     }
     actualNumber = parseInt(ev.target.parentNode.firstChild.nextSibling.value);
-    newNumber = actualNumber + 1;
-    ev.target.parentNode.firstChild.nextSibling.value = newNumber;
+    if(actualNumber < 10){
+        newNumber = actualNumber + 1;
+        ev.target.parentNode.firstChild.nextSibling.value = newNumber;
+    }
 }
 //Function for decrementing a number in input by 1 in custom input number
 function numberDecrement(ev) {
@@ -194,14 +203,26 @@ function onInputBlur(ev) {
     }
 }
 //Callculating all action in form
-function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice) {
-
+function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice, counterElements, i, TotalPrice) {
     var dropdownCountry = document.getElementById('country-sz');
     var billTransport = document.getElementById('bill-transport-sz');
     var billFinalPrice = document.getElementById('bill-summary-price-sz');
-    document.getElementById('bill-device-name-sz').innerHTML = 'Model: <br>' + devictTypVal + " " + deviceModelVal;
-    document.getElementById('bill-quantity-sz').innerHTML = 'Počet kusov: <br>' + quantityVal + " ks";
-    document.getElementById('bill-price-sz').innerHTML = 'Cena: <br>' + (quantityVal * devicePrice) + " €";
+      
+    if(i == 0){
+        document.getElementById('bill-device-name-sz-'+(i)).innerHTML = 'Model: <br>' + devictTypVal + " " + deviceModelVal;
+        document.getElementById('bill-quantity-sz-'+(i)).innerHTML = 'Počet kusov: <br>' + quantityVal + " ks";
+        document.getElementById('bill-price-sz-'+(i)).innerHTML = 'Cena: <br>' + (quantityVal * devicePrice) + " €";
+        TotalPrice[i] = (quantityVal * devicePrice);
+    }
+    else{
+        document.getElementById('bill-device-name-sz-'+(i)).innerHTML = devictTypVal + " " + deviceModelVal;
+        document.getElementById('bill-quantity-sz-'+(i)).innerHTML = quantityVal + " ks";
+        document.getElementById('bill-price-sz-'+(i)).innerHTML = (quantityVal * devicePrice) + " €";
+        TotalPrice[i] = (quantityVal * devicePrice);
+    }
+     
+    var sum = TotalPrice.reduce(function(a, b) { return a + b; }, 0);
+
     //Listener for country 
     dropdownCountry.addEventListener('change', function() {
         switch (dropdownCountry.value) {
@@ -213,12 +234,12 @@ function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice) {
             case "Slovenská republika":
                 billTransport.innerHTML = "ZADARMO";
                 //Final price for SK
-                billFinalPrice.innerHTML = (quantityVal * devicePrice) + " €";
+                billFinalPrice.innerHTML = Number(sum).toFixed(2) + " €";
                 break;
             case "Česká republika":
                 billTransport.innerHTML = "+2 €";
                 //Final price for CZ
-                billFinalPrice.innerHTML = (2 + quantityVal * devicePrice) + " €";
+                billFinalPrice.innerHTML = Number(sum+2).toFixed(2) + " €";
                 break;
         }
     });
@@ -227,6 +248,7 @@ function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice) {
 function checkIfFilled(counterElements) {
 
     canShow = false;
+    var TotalPrice = new Array();
     for (var i = 0; i <= counterElements; i++) {
         var deviceType = jQuery('select[name=cf-device_type-'+(i)+'] option:selected');
         var deviceModel = jQuery('select[name=cf-device_model-'+(i)+'] option:selected');
@@ -235,6 +257,7 @@ function checkIfFilled(counterElements) {
         
 
         if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO) {
+            showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'), counterElements, i, TotalPrice);
             canShow = true;
         }
         else{
@@ -242,49 +265,47 @@ function checkIfFilled(counterElements) {
         } 
     }
     if(canShow){
-        showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'));
         document.getElementsByClassName('validation')[0].innerHTML = "";
-        jQuery('#myModal').modal('show');
+        var test = jQuery('#myModal').modal('show');
     }
     else{
         document.getElementsByClassName('validation')[0].innerHTML = "Všetky polia musia byť vyplnené!!!";
     }
 
 }
+function addBillLines(billLinesElement, counterElements){
+    billLinesElement.id = 'id_contact-section-sz-'+(counterElements)
+    billLinesElement.childNodes[1].id ='bill-device-name-sz-'+(counterElements);
+    billLinesElement.childNodes[3].id ='bill-quantity-sz-'+(counterElements);
+    billLinesElement.childNodes[5].id ='bill-price-sz-'+(counterElements);
 
-function addDropDown(dropDownElement, counterElements){
+    //Ak existuje už nevytvorý novy
+    if(!jQuery('#id_contact-section-sz-'+(counterElements)).length && counterElements < 5){
+        jQuery(billLinesElement.outerHTML).insertAfter('#id_contact-section-sz-'+(counterElements-1));
+    } 
+}
+
+function addDropDown(dropDownElement, billLinesElement, counterElements){
 
     dropDownElement.id = 'devicePicker-'+(counterElements+1);
         //vytvorí ho ked stalčí hocičo okrem iné
-        
-        for (var i = 0; i < dropDownElement.childNodes.length; i++) {
-            switch (i){
-                case 1:{
-                    dropDownElement.childNodes[1].childNodes[1].childNodes[3].childNodes[3].name = "cf-device_type-"+(counterElements+1);
-                    dropDownElement.childNodes[1].childNodes[1].childNodes[3].childNodes[3].id = 'id-device_type-'+(counterElements+1);
-                    break;
-                }
-                case 2:{
-                    dropDownElement.childNodes[3].childNodes[1].childNodes[3].childNodes[2].name = "cf-device_model-"+(counterElements+1);
-                    dropDownElement.childNodes[3].childNodes[1].childNodes[3].childNodes[2].id = 'id-device_model-'+(counterElements+1);
-                    break;
-                }
-                case 3:{
-                    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[1].name = "cf-device_quantity-"+(counterElements+1);
-                    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[1].id = 'id-device_quantity-'+(counterElements+1);
-                    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[3].id = 'button_decrement-sz-'+(counterElements+1);
-                    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[5].id = 'button_increment-sz-'+(counterElements+1);
-                    break;
-                }
-            }
-        }
+                
+    dropDownElement.childNodes[1].childNodes[1].childNodes[3].childNodes[3].name = "cf-device_type-"+(counterElements+1);
+    dropDownElement.childNodes[1].childNodes[1].childNodes[3].childNodes[3].id = 'id-device_type-'+(counterElements+1);
+    dropDownElement.childNodes[3].childNodes[1].childNodes[3].childNodes[2].name = "cf-device_model-"+(counterElements+1);
+    dropDownElement.childNodes[3].childNodes[1].childNodes[3].childNodes[2].id = 'id-device_model-'+(counterElements+1);
+    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[1].name = "cf-device_quantity-"+(counterElements+1);
+    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[1].id = 'id-device_quantity-'+(counterElements+1);
+    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[3].id = 'button_decrement-sz-'+(counterElements+1);
+    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[5].id = 'button_increment-sz-'+(counterElements+1);
 
-          //Ak existuje už nevytvorý novy
-          if(!jQuery('#devicePicker-'+(counterElements+1)).length && counterElements < 4){
-              jQuery(dropDownElement.outerHTML).insertAfter('#devicePicker-'+counterElements);
-              counterElements++;   
-              addListernerDropDown(counterElements);
-          } 
+    //Ak existuje už nevytvorý novy
+    if(!jQuery('#devicePicker-'+(counterElements+1)).length && counterElements < 4){
+        jQuery(dropDownElement.outerHTML).insertAfter('#devicePicker-'+counterElements);
+        counterElements++;   
+        addBillLines(billLinesElement,counterElements);
+        addListernerDropDown(counterElements);
+    } 
     return  counterElements;    
 }
 function removeDropDown(lastDropdownId){
@@ -292,6 +313,7 @@ function removeDropDown(lastDropdownId){
     //delete dropdown menu
     if(jQuery('#devicePicker-'+lastDropdownId).length && lastDropdownId > 0){
        jQuery('#devicePicker-'+lastDropdownId).remove();
+       jQuery('#id_contact-section-sz-'+lastDropdownId).remove();
        lastDropdownId--;
     }
 

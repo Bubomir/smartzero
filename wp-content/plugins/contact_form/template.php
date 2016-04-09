@@ -103,12 +103,12 @@
                                 </div>
                             </div>
                             <div class="row custom" style="margin-top: 16px;">
-                                <div class="contact-section-sz">
-                                    <div id="bill-device-name-sz" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <div id='id_contact-section-sz-0' class="contact-section-sz">
+                                    <div id="bill-device-name-sz-0" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                     </div>
-                                    <div id="bill-quantity-sz" class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
+                                    <div id="bill-quantity-sz-0" class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
                                     </div>
-                                    <div id="bill-price-sz" class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: right;">
+                                    <div id="bill-price-sz-0" class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: right;">
                                     </div>
                                 </div>
                             </div>
