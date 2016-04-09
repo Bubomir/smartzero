@@ -48,9 +48,7 @@ var ID_NULL = 'null';
     //Part for Custom Input of type number
     var actualNumber, newNumber;
     //Adding listeners for click event
-    document.getElementById('button_increment-sz').addEventListener('click', numberIncrement);
-    document.getElementById('button_decrement-sz').addEventListener('click', numberDecrement);
-
+    
     var dropDownElement =  document.getElementById('devicePicker-0').cloneNode(true);
     
     document.getElementById('addDropDown').addEventListener('click', function(){ counterElements = addDropDown(dropDownElement, counterElements)});
@@ -274,6 +272,8 @@ function addDropDown(dropDownElement, counterElements){
                 case 3:{
                     dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[1].name = "cf-device_quantity-"+(counterElements+1);
                     dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[1].id = 'id-device_quantity-'+(counterElements+1);
+                    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[3].id = 'button_decrement-sz-'+(counterElements+1);
+                    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[5].id = 'button_increment-sz-'+(counterElements+1);
                     break;
                 }
             }
@@ -299,7 +299,12 @@ function removeDropDown(lastDropdownId){
 }
 
 function addListernerDropDown(counterElements) {
+    document.getElementById('button_increment-sz-'+(counterElements)).addEventListener('click', numberIncrement);
+    document.getElementById('button_decrement-sz-'+(counterElements)).addEventListener('click', numberDecrement);
+
     var dropdownDeviceType = document.getElementById('id-device_type-'+(counterElements));
+
+
     dropdownDeviceType.addEventListener('change', function(){
         getElementValue(dropdownDeviceType.value, counterElements);
     });

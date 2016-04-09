@@ -187,10 +187,10 @@
                             </label>
                             <div class="input-group">
                                 <input id='id-device_quantity-0' onblur="if (this.placeholder == '') {this.placeholder = '0';}"  onkeypress="return AllowOnlyNumbers(event);" name="cf-device_quantity-0" type="text" class="form-control" autocomplete = "off" onfocus="this.placeholder = '';" value="0" placeholder="0" />
-                                <div id="button_decrement-sz" class="input-group-addon" type="button">
+                                <div id="button_decrement-sz-0" class="input-group-addon" type="button">
                                     -
                                 </div>
-                                <div id="button_increment-sz" class="input-group-addon" type="button">
+                                <div id="button_increment-sz-0" class="input-group-addon" type="button">
                                     +
                                 </div>
                                 
