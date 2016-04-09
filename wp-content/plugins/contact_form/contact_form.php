@@ -77,25 +77,52 @@ function insert_to_database()
         $data['street']          = sanitize_text_field($_POST["cf-street"]);
         $data['zip']             = sanitize_text_field($_POST["cf-zip"]);
         $data['payment_method']  = 'Platba na dobierku';
-        $data['total_price']     = '10';
+        $data['total_price']     = $_POST["cf-total_price"];
         $data['currency_code']   = 'EUR';
         $data['date']            = date('Y-m-d H:i:s');
         $data['order_status_id'] = '1'; // 1 = Pending more in openCart DB table oc_order_status
         // $data['device_type']     = sanitize_text_field($_POST["cf-device_type"]);
         //$data['device_model']    = sanitize_text_field($_POST["cf-device_model"]);
-        $data['device_quantity'] = sanitize_text_field($_POST["cf-device_quantity"]);
+        $data['counter']         = $_POST['cf-counter'];
+        $data['device_quantity'] = array();
         $data['tax']             = '0';
         $data['store_url']       = 'http://www.smartzero-opencart.dev/';
         $data['shipping_code']   = '[]';
 
-        $data['product_id'] = $_POST["cf-device_model"];
+        $data['product_id'] = array();
         
-        foreach ($data as $value) {
+        for ($i=0; $i <= $data['counter']; $i++) { 
+            array_push($data['device_quantity'], sanitize_text_field($_POST["cf-device_quantity-".$i]));
+            array_push($data['product_id'], $_POST["cf-device_model-".$i]);
+        }
+
+        $products = array();
+        array_push($products, $data['device_quantity']);
+        array_push($products, $data['product_id']);
+
+       /* for($i = 0; $i< sizeof($products); $i++){
+            switch ($i) {
+                case 1:{
+                     echo '<br> test '. $products[$i][$i];
+                    break;
+                }
+                case 2:{
+                     echo '<br> test2 '. $products[$i][$i];
+                    break;
+                }
+                
+            }
+           
+        }*/
+
+
+        
+        foreach ($data as $key => $value) {
 
             if ($value == null) {
-                echo 'prazdne ' . $value . '<br>';
+                echo 'prazdne  key '.$key.' value '.$value . '<br>';
             }
-            //echo $value . '<br>';
+            //echo 'key  '.$value . '<br>';
         }
 
         $orders_data = array(
@@ -136,41 +163,43 @@ function insert_to_database()
         if ($conn->query($sql_order) === true) {
             $last_id = $conn->insert_id;
 
-            $fetch_devices_names = "SELECT * FROM oc_product_description WHERE product_id = ".$data['product_id']." "; 
-            $result_products_names = $conn->query($fetch_devices_names);
 
-            $product_nameSK;
-            $product_nameEN;
-             if ($result_products_names->num_rows > 0) {
-                // output data of each row
-                while($row = $result_products_names->fetch_assoc()) {
-                    $product_nameSK = $row['name'];
-                    $product_nameEN = "Tempered glass ".$row['meta_title'];
+
+                $fetch_devices_names = "SELECT * FROM oc_product_description WHERE product_id = ".$data['product_id']." "; 
+                $result_products_names = $conn->query($fetch_devices_names);
+
+                $product_nameSK;
+                $product_nameEN;
+                 if ($result_products_names->num_rows > 0) {
+                    // output data of each row
+                    while($row = $result_products_names->fetch_assoc()) {
+                        $product_nameSK = $row['name'];
+                        $product_nameEN = "Tempered glass ".$row['meta_title'];
+                    }
                 }
-            }
 
-            $order_data_products = array(
-                'order_id' => $last_id,
-                'product_id' => $data['product_id'],
-                'name' => $product_nameSK,
-                'model' => $product_nameEN,
-                'quantity' =>  $data['device_quantity'],
-                'price' => $data['total_price'],
-                'total' => $data['total_price'],
-                'tax' => $data['tax']
-            );
+                $order_data_products = array(
+                    'order_id' => $last_id,
+                    'product_id' => $data['product_id'],
+                    'name' => $product_nameSK,
+                    'model' => $product_nameEN,
+                    'quantity' =>  $data['device_quantity'],
+                    'price' => $data['total_price'],
+                    'total' => $data['total_price'],
+                    'tax' => $data['tax']
+                );
 
-            foreach ($order_data_products as $idx=>$order_data_product) {
-                $escaped_values_product[$idx] = "'".$order_data_product."'";
-            }
+                foreach ($order_data_products as $idx=>$order_data_product) {
+                    $escaped_values_product[$idx] = "'".$order_data_product."'";
+                }
 
-            $columns_order_data_product = implode(", ", array_keys($escaped_values_product));
-            $values_order_data_product  = implode(", ", $escaped_values_product);
+                $columns_order_data_product = implode(", ", array_keys($escaped_values_product));
+                $values_order_data_product  = implode(", ", $escaped_values_product);
 
-            $sql_order_product = "INSERT INTO oc_order_product ($columns_order_data_product ) VALUES ($values_order_data_product)";
-            if (!$conn->query($sql_order_product) === true) {
-                echo "Error: " . $sql_order_product . "<br>" . $conn->error;
-            }
+                $sql_order_product = "INSERT INTO oc_order_product ($columns_order_data_product ) VALUES ($values_order_data_product)";
+                if (!$conn->query($sql_order_product) === true) {
+                    echo "Error: " . $sql_order_product . "<br>" . $conn->error;
+                }
 
         } else {
             echo "Error: " . $sql_order . "<br>" . $conn->error;

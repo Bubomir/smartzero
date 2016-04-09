@@ -222,7 +222,7 @@ function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice, counte
     }
      
     var sum = TotalPrice.reduce(function(a, b) { return a + b; }, 0);
-
+    var inputTotalPrice = document.getElementById('bill-total_price');
     //Listener for country 
     dropdownCountry.addEventListener('change', function() {
         switch (dropdownCountry.value) {
@@ -235,10 +235,12 @@ function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice, counte
                 billTransport.innerHTML = "ZADARMO";
                 //Final price for SK
                 billFinalPrice.innerHTML = Number(sum).toFixed(2) + " €";
+                inputTotalPrice.value = Number(sum).toFixed(2);
                 break;
             case "Česká republika":
                 billTransport.innerHTML = "+2 €";
                 //Final price for CZ
+                inputTotalPrice.value = Number(sum).toFixed(2);
                 billFinalPrice.innerHTML = Number(sum+2).toFixed(2) + " €";
                 break;
         }
@@ -266,6 +268,8 @@ function checkIfFilled(counterElements) {
     }
     if(canShow){
         document.getElementsByClassName('validation')[0].innerHTML = "";
+        var counterForPHP = document.getElementById('id_counter_dropDropdowns_elements');
+        counterForPHP.value = counterElements;
         var test = jQuery('#myModal').modal('show');
     }
     else{

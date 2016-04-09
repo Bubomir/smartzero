@@ -128,6 +128,8 @@
                                     </div>
                                     <div id="bill-summary-price-sz" class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="text-align: right;">
                                     </div>
+                                    <input id="bill-total_price" name="cf-total_price" type="hidden">
+                                    <input id="id_counter_dropDropdowns_elements" name="cf-counter" type="hidden">
                                 </div>
                             </div>
                             <div class="row custom" style="margin-top: 16px;">
