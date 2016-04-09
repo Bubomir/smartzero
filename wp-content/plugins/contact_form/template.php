@@ -150,26 +150,34 @@
         </div>
         <!-- DropDows and Button -->
         <div class="container-contact-form-sz">
-                <div class="row">
+        
+        <button class="ut-btn  theme-btn medium round"  id="addDropDown" type="button">+</button>
+        <button class="ut-btn  theme-btn medium round"  id="removeDropDown" type="button">-</button>
+
+                <div id="devicePicker-0" class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label>
                                 Značka
                             </label>
-                            <?php echo  get_product_type_parse(); ?>
+                            <div> <!-- POTREBNY DIV PRE JS LOOP --> 
+                                <?php echo  get_product_type_parse(); ?>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <div class="form-group">
+                           
                                 <label>
                                     Model zariadenia
                                 </label>
-                                <select id='id-device_model' name='cf-device_model' class='form-control' required autocomplete='off'>
-                                <option value="null" >-- Vyberte si jednu z možností --</option>
+                                <div ><!-- POTREBNY DIV PRE JS LOOP --> 
+                                    <select id='id-device_model-0' name='cf-device_model-0' class='form-control' required autocomplete='off'>
+                                    <option value="null" >-- Vyberte si jednu z možností --</option>
 
-                                </select>
-                            </div>
+                                    </select>
+                                </div>
+                            
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -178,7 +186,7 @@
                                 Množstvo
                             </label>
                             <div class="input-group">
-                                <input onblur="if (this.placeholder == '') {this.placeholder = '0';}"  onkeypress="return AllowOnlyNumbers(event);" name="cf-device_quantity" type="text" class="form-control" autocomplete = "off" onfocus="this.placeholder = '';" value="0" placeholder="0" />
+                                <input id='id-device_quantity-0' onblur="if (this.placeholder == '') {this.placeholder = '0';}"  onkeypress="return AllowOnlyNumbers(event);" name="cf-device_quantity-0" type="text" class="form-control" autocomplete = "off" onfocus="this.placeholder = '';" value="0" placeholder="0" />
                                 <div id="button_decrement-sz" class="input-group-addon" type="button">
                                     -
                                 </div>

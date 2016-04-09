@@ -47,7 +47,7 @@ function get_product_type_parse()
     $fetch = "SELECT * FROM oc_category_description ORDER BY name ASC";
     $result = $conn->query($fetch);
 
-    $html_select = "<select id='id-device_type' name='cf-device_type' class='form-control' required autocomplete='off'> <option value='null' >-- Vyberte si jednu z možností --</option>";
+    $html_select = "<select id='id-device_type-0' name='cf-device_type-0' class='form-control' required autocomplete='off'> <option value='null' >-- Vyberte si jednu z možností --</option>";
     if ($result->num_rows > 0) {
         // output data of each row
         while($row = $result->fetch_assoc()) {

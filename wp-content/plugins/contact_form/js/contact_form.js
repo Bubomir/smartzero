@@ -2,9 +2,10 @@
 var ID_NULL = 'null';
 //Inicialization function must run every time when page is laoded
 (function() {
+    var counterElements = 0;
     //it will get all value from txt document
-    getElementValue();
-    document.getElementById('button_order-sz').addEventListener('click', checkIfFilled);
+    getElementValue(counterElements);
+    document.getElementById('button_order-sz').addEventListener('click', function() {checkIfFilled(counterElements);});
     //document.getElementById("country-sz").selectedIndex = -1;
     // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
     if (!String.prototype.trim) {
@@ -48,9 +49,15 @@ var ID_NULL = 'null';
     //Adding listeners for click event
     document.getElementById('button_increment-sz').addEventListener('click', numberIncrement);
     document.getElementById('button_decrement-sz').addEventListener('click', numberDecrement);
+
+    var dropDownElement =  document.getElementById('devicePicker-0').cloneNode(true);
+    
+    document.getElementById('addDropDown').addEventListener('click', function(){ counterElements = addDropDown(dropDownElement, counterElements)});
+    document.getElementById('removeDropDown').addEventListener('click', function(){counterElements = removeDropDown(counterElements)});
 })();
 
-function getElementValue() {
+function getElementValue(counterElements) {
+    console.log('tes', counterElements);
     var ID_NULL = '-- Vyberte si jednu z možností --';
     jQuery('select[name=cf-device_type]').change(function(event) {
         var dropdown_object = document.getElementById('id-device_model');
@@ -216,17 +223,64 @@ function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice) {
     });
 }
 //Check if fields are filled
-function checkIfFilled(ev) {
-    var deviceType = jQuery('select[name=cf-device_type] option:selected');
-    var deviceModel = jQuery('select[name=cf-device_model] option:selected');
-    var quantity = jQuery('input[name=cf-device_quantity]');
-    var ID_ZERO = '0';
+function checkIfFilled(counterElements) {
 
-    if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO) {
-        showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'));
-        document.getElementsByClassName('validation')[0].innerHTML = "";
-        jQuery('#myModal').modal('show');
-    } else {
-        document.getElementsByClassName('validation')[0].innerHTML = "Všetky polia musia byť vyplnené!!!";
+    for (var i = 0; i < counterElements; i++) {
+        var deviceType = jQuery('select[name=cf-device_type-'+i+'] option:selected');
+        var deviceModel = jQuery('select[name=cf-device_model-'+i+'] option:selected');
+        var quantity = jQuery('input[name=cf-device_quantity-'+i+']');
+        var ID_ZERO = '0';
+
+        if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO) {
+            showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'));
+            document.getElementsByClassName('validation')[0].innerHTML = "";
+            jQuery('#myModal').modal('show');
+        } else {
+            document.getElementsByClassName('validation')[0].innerHTML = "Všetky polia musia byť vyplnené!!!";
+        }
     }
+
+}
+
+function addDropDown(dropDownElement, counterElements){
+
+    dropDownElement.id = 'devicePicker-'+(counterElements+1);
+        //vytvorí ho ked stalčí hocičo okrem iné
+        
+        for (var i = 0; i < dropDownElement.childNodes.length; i++) {
+            switch (i){
+                case 1:{
+                    dropDownElement.childNodes[1].childNodes[1].childNodes[3].childNodes[3].name = "cf-device_type-"+(counterElements+1);
+                    dropDownElement.childNodes[1].childNodes[1].childNodes[3].childNodes[3].id = 'id-device_type-'+(counterElements+1);
+                    break;
+                }
+                case 2:{
+                    dropDownElement.childNodes[3].childNodes[1].childNodes[3].childNodes[2].name = "cf-device_model-"+(counterElements+1);
+                    dropDownElement.childNodes[3].childNodes[1].childNodes[3].childNodes[2].id = 'id-device_model-'+(counterElements+1);
+                    break;
+                }
+                case 3:{
+                    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[1].name = "cf-device_quantity-"+(counterElements+1);
+                    dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[1].id = 'id-device_quantity-'+(counterElements+1);
+                    break;
+                }
+            }
+        }
+
+          //Ak existuje už nevytvorý novy
+          if(!jQuery('#devicePicker-'+(counterElements+1)).length && counterElements < 4){
+              jQuery(dropDownElement.outerHTML).insertAfter('#devicePicker-'+counterElements);
+              counterElements++;   
+          } 
+    return  counterElements;    
+}
+function removeDropDown(lastDropdownId){
+
+    //delete dropdown menu
+    if(jQuery('#devicePicker-'+lastDropdownId).length && lastDropdownId > 0){
+       jQuery('#devicePicker-'+lastDropdownId).remove();
+       lastDropdownId--;
+    }
+
+    return lastDropdownId;
 }
