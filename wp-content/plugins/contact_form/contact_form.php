@@ -96,9 +96,7 @@ function insert_to_database()
             array_push($data['product_id'], $_POST["cf-device_model-".$i]);
         }
 
-        $products = array();
-        array_push($products, $data['device_quantity']);
-        array_push($products, $data['product_id']);
+       
 
        /* for($i = 0; $i< sizeof($products); $i++){
             switch ($i) {
@@ -159,33 +157,43 @@ function insert_to_database()
 
         $sql_order = "INSERT INTO oc_order ($columns_order_data) VALUES ($values_order_data)";
 
-        
+        $last_id_product_order = array();
         if ($conn->query($sql_order) === true) {
             $last_id = $conn->insert_id;
 
+            for ($i=0; $i < $data['counter']; $i++) { 
 
-
-                $fetch_devices_names = "SELECT * FROM oc_product_description WHERE product_id = ".$data['product_id']." "; 
+                $fetch_devices_names = "SELECT * FROM oc_product_description WHERE product_id = ".$data['product_id'][$i]." "; 
                 $result_products_names = $conn->query($fetch_devices_names);
 
                 $product_nameSK;
                 $product_nameEN;
-                 if ($result_products_names->num_rows > 0) {
+                if ($result_products_names->num_rows > 0) {
                     // output data of each row
                     while($row = $result_products_names->fetch_assoc()) {
                         $product_nameSK = $row['name'];
                         $product_nameEN = "Tempered glass ".$row['meta_title'];
                     }
                 }
+                $fetch_devices_price = "SELECT * FROM oc_product WHERE product_id = ".$data['product_id'][$i]." "; 
+                $result_products_price = $conn->query($fetch_devices_price);
+
+                if ($result_products_price->num_rows > 0) {
+                    // output data of each row
+                    while($row = $result_products_price->fetch_assoc()) {
+                        $product_price = $row['price'];
+                    }
+                }
+                $product_price_total = $product_price * $data['device_quantity'][$i];
 
                 $order_data_products = array(
                     'order_id' => $last_id,
-                    'product_id' => $data['product_id'],
+                    'product_id' => $data['product_id'][$i],
                     'name' => $product_nameSK,
                     'model' => $product_nameEN,
-                    'quantity' =>  $data['device_quantity'],
-                    'price' => $data['total_price'],
-                    'total' => $data['total_price'],
+                    'quantity' =>  $data['device_quantity'][$i],
+                    'price' => $product_price,
+                    'total' => $product_price_total,
                     'tax' => $data['tax']
                 );
 
@@ -200,6 +208,8 @@ function insert_to_database()
                 if (!$conn->query($sql_order_product) === true) {
                     echo "Error: " . $sql_order_product . "<br>" . $conn->error;
                 }
+                array_push($last_id_product_order, $conn->insert_id);                
+            }
 
         } else {
             echo "Error: " . $sql_order . "<br>" . $conn->error;
@@ -215,10 +225,21 @@ function insert_to_database()
         if (!$conn->query($sql_order_total) === true) {
             echo "Error: " . $sql_order_total . "<br>" . $conn->error;
         }
+        $last_id_product_order = implode(', ', $last_id_product_order);
+        $order_products = array();
+        $fetch_order_product = "SELECT * FROM oc_order_product WHERE order_product_id IN (".$last_id_product_order.") "; 
+        $result_order_product = $conn->query($fetch_order_product);
+
+        if ($result_order_product->num_rows > 0) {
+            // output data of each row
+            while($row = $result_order_product->fetch_assoc()) {
+                 array_push($order_products,  $row);
+            }
+        }
+       
         ob_start();
         include WP_PLUGIN_DIR.'/contact_form/template_mail.php';
         $mail_message = ob_get_clean();
-
         deliver_mail($email, $last_id, $mail_message);
     }
     $conn->close();
