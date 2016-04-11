@@ -272,8 +272,8 @@ function checkIfFilled(counterElements) {
         document.getElementsByClassName('validation')[0].innerHTML = "";
         var counterForPHP = document.getElementById('id_counter_dropDropdowns_elements');
         counterForPHP.value = counterElements;
-        var test = jQuery('#myModal').modal('show');
-
+        
+        //set empty value as defalut after open Modal form
         if(jQuery('#myModal').length){
             document.getElementById("bill-transport-sz").childNodes[0].data = "";
             document.getElementById("bill-summary-price-sz").childNodes[0].data = "";
