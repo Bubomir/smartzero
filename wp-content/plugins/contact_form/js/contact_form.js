@@ -277,7 +277,9 @@ function checkIfFilled(counterElements) {
         if(jQuery('#myModal').length){
             document.getElementById("bill-transport-sz").childNodes[0].data = "";
             document.getElementById("bill-summary-price-sz").childNodes[0].data = "";
+            document.getElementById("bill-total_price").value = "";
             var selectCountry = document.getElementById("country-sz");
+
             if (selectCountry.selectedIndex != 0) {
                 selectCountry.selectedIndex = 0;
             }
