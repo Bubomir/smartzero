@@ -249,7 +249,7 @@ function deliver_mail($email, $order_number, $mail_message)
 {    
     add_filter( 'wp_mail_content_type', 'wpdocs_set_html_mail_content_type' );
 
-    $multiple_recipients = array('bubomirxxx@gmail.com',$email);
+    $multiple_recipients = array('bubomirxxx@gmail.com',$email);    //objednavka@smartzero.sk
     $subject   = 'Smartzero - Vaša objednávka bola zaevidovaná pod číslom: '.$order_number;
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";

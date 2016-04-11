@@ -2,6 +2,8 @@
 var ID_NULL = 'null';
 //Inicialization function must run every time when page is laoded
 (function() {
+    
+
     //conter for iteration ID, add dropdown element 
     var counterElements = 0;
     //it will get all value from txt document
@@ -271,6 +273,15 @@ function checkIfFilled(counterElements) {
         var counterForPHP = document.getElementById('id_counter_dropDropdowns_elements');
         counterForPHP.value = counterElements;
         var test = jQuery('#myModal').modal('show');
+
+        if(jQuery('#myModal').length){
+            document.getElementById("bill-transport-sz").childNodes[0].data = "";
+            document.getElementById("bill-summary-price-sz").childNodes[0].data = "";
+            var selectCountry = document.getElementById("country-sz");
+            if (selectCountry.selectedIndex != 0) {
+                selectCountry.selectedIndex = 0;
+            }
+        }
     }
     else{
         document.getElementsByClassName('validation')[0].innerHTML = "Všetky polia musia byť vyplnené!!!";
