@@ -258,9 +258,10 @@ function checkIfFilled(counterElements) {
         var deviceModel = jQuery('select[name=cf-device_model-'+(i)+'] option:selected');
         var quantity = jQuery('input[name=cf-device_quantity-'+(i)+']');
         var ID_ZERO = '0';
+        var ID_EMPTY = '';
         
 
-        if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO) {
+        if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO && quantity[0].value != ID_EMPTY) {
             showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'), counterElements, i, TotalPrice);
             canShow = true;
         }
@@ -272,8 +273,8 @@ function checkIfFilled(counterElements) {
         document.getElementsByClassName('validation')[0].innerHTML = "";
         var counterForPHP = document.getElementById('id_counter_dropDropdowns_elements');
         counterForPHP.value = counterElements;
-        
-        //set empty value as defalut after open Modal form
+        var test = jQuery('#myModal').modal('show');
+
         if(jQuery('#myModal').length){
             document.getElementById("bill-transport-sz").childNodes[0].data = "";
             document.getElementById("bill-summary-price-sz").childNodes[0].data = "";

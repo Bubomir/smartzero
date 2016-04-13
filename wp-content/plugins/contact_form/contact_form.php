@@ -22,7 +22,7 @@ function wptuts_styles_with_the_lot()
 
         wp_register_style('contact_style', plugins_url('/css/style.css', __FILE__), array(), '', 'all');
         wp_enqueue_style('contact_style');
-
+        
         wp_register_script('bootstrap_js', plugins_url('/js/bootstrap.min.js', __FILE__), array('jquery'), '', true);
         wp_enqueue_script('bootstrap_js');
 

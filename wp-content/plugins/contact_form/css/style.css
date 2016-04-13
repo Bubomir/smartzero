@@ -1254,7 +1254,9 @@ output {
   -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
-
+.form-group select {
+  -webkit-appearance:none;
+}
 .form-control:focus {
   border-color: #66afe9;
   outline: 0;
@@ -2291,6 +2293,7 @@ button.close {
 }
 
 .contact-form-section-sz .input-group-sz select {
+  -webkit-appearance:none;
   margin: 0px;
   color: #111111;
   position: relative;
@@ -2317,7 +2320,7 @@ button.close {
   pointer-events: none;
   overflow: hidden;
   letter-spacing: 1px;
-  -webkit-transform: translate3d(0, 3em, 0);
+  -webkit-transform: translate3d(0, 2.35em, 0);
   transform: translate3d(0, 2.35em, 0);
   -webkit-transition: -webkit-transform 0.25s;
   transition: transform 0.25s;
