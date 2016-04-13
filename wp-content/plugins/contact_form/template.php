@@ -160,8 +160,8 @@
         <!-- DropDows and Button -->
         <div class="container-contact-form-sz">
         
-        <button class="ut-btn  theme-btn medium round"  id="addDropDown" type="button">+</button>
-        <button class="ut-btn  theme-btn medium round"  id="removeDropDown" type="button">-</button>
+        <button id="addDropDown" class="ut-btn  theme-btn medium round" type="button">+</button>
+        <button class="ut-btn  theme-btn medium round"  id="removeDropDown" >-</button>
 
                 <div id="devicePicker-0" class="row">
                     <div class="col-lg-4">
