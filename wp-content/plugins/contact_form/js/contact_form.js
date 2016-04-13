@@ -267,6 +267,7 @@ function checkIfFilled(counterElements) {
         }
         else{
             canShow = false;
+            break;
         } 
     }
     if(canShow){

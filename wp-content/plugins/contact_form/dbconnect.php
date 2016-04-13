@@ -2,7 +2,7 @@
 $dbhost = 'localhost';
 $dbuser = 'root';
 $dbpass = '';
-$dbname = 'smartzero-opencard';
+$dbname = 'smartzero-opencart';
 
 // Create connection
 $conn = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
