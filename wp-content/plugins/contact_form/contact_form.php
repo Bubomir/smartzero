@@ -61,8 +61,9 @@ function get_product_type_parse()
 
 function insert_to_database()
 {
+	
     include WP_PLUGIN_DIR.'/contact_form/dbconnect.php';
-    
+    mysql_query("SET NAMES 'utf8' ");
     // if the submit button is clicked, insert date to the database
     if (isset($_POST['cf-submitted'])) {
 
