@@ -141,8 +141,8 @@
                             </div>
                             <div class="row custom" style="margin-top: 16px;">
                                 <div class="">
-                                   <label style="float: left; margin-left: 30px; color: white; text-align: justify;">Prečítal(a) som si a súhlasím s <a href="http://tvrdene-skla.smartzero.sk/obchodne-podmienky">Obchodnými podmienkami</a> </label>
-                                   <input id='check-conditions' style="float: right; margin-right: 30px;" type="checkbox" required="required" />
+                                   <label style="float: left; margin: 0 30px; color: white; text-align: justify;">Prečítal(a) som si a súhlasím s <a href="http://tvrdene-skla.smartzero.sk/obchodne-podmienky">Obchodnými podmienkami</a> </label>
+                                   <input id='check-conditions' style="float: right; margin-right: 30px; margin-top: 4px; margin-bottom: 0px;" type="checkbox" required="required" />
                                 </div>
                             </div>
                     </div>
@@ -161,7 +161,7 @@
         <div class="container-contact-form-sz">
         
         <button id="addDropDown" class="ut-btn  theme-btn medium round" type="button">+</button>
-        <button class="ut-btn  theme-btn medium round"  id="removeDropDown" >-</button>
+        <button id="removeDropDown" class="ut-btn  theme-btn medium round"  type="button" >-</button>
 
                 <div id="devicePicker-0" class="row">
                     <div class="col-lg-4">
