@@ -146,10 +146,6 @@
         </div>
         <!-- DropDows and Button -->
         <div class="container-contact-form-sz">
-        
-        <button id="addDropDown" class="ut-btn  theme-btn medium round" type="button">+</button>
-        <button id="removeDropDown" class="ut-btn  theme-btn medium round"  type="button" >-</button>
-
                 <div id="devicePicker-0" class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
@@ -196,10 +192,25 @@
                 </div>
                 <div class="validation"></div>
                 <div class="row">
-                    <div class="col-lg-4 col-lg-offset-4" style="text-align: center;">
-                        <button id="button_order-sz" type="button" class="ut-btn  theme-btn medium round" style="margin-top: 15px;">
-                            Objednať
-                        </button>
+                	<div class="col-lg-6 col-lg-offset-0" >
+                		<p style=" margin: 0px; color: #00bbff;">Pridať ďaľšie sklo</p>
+               		</div>
+                    <div class="col-lg-7 col-lg-offset-0" style=" margin-top: 15px;">
+
+                    	<button id="addDropDown" class="ut-btn  theme-btn medium round" type="button"  style="float: left;">
+                    		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="12px" height="12px" viewBox="-0.328 0 512 512" enable-background="new -0.328 0 512 512" xml:space="preserve">
+							<path d="M467.534,211.863H299.81V44.138C299.81,19.763,280.032,0,255.672,0c-24.375,0-44.138,19.77-44.138,44.138v167.725H43.81  c-24.375,0-44.138,19.77-44.138,44.138s19.763,44.138,44.138,44.138h167.725v167.725c0,24.375,19.763,44.138,44.138,44.138  c24.368,0,44.138-19.763,44.138-44.138V300.138h167.725c24.375,0,44.138-19.777,44.138-44.138  C511.672,231.618,491.909,211.863,467.534,211.863z" fill="#FFFFFF"/>
+							</svg>
+                    	</button>
+	        			<button id="removeDropDown" class="ut-btn  theme-btn medium round" type="button" style="float: left;">
+	        				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="12px" height="12px" viewBox="0.328 0 512 94.278" enable-background="new 0.328 0 512 94.278" xml:space="preserve">
+							<g>
+								<path d="M465.189,94.278H47.467c-26.034,0-47.139-21.104-47.139-47.139S21.433,0,47.467,0h417.722   c26.034,0,47.139,21.105,47.139,47.14S491.223,94.278,465.189,94.278z" fill="#FFFFFF"/>
+							</g>
+							</svg>
+	        			</button>
+		        		
+	                    <button id="button_order-sz" type="button" class="ut-btn  theme-btn medium round" style="float: right;">Objednať</button>
                     </div>
                 </div>
         </div>

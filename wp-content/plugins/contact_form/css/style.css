@@ -2488,10 +2488,6 @@ button.close {
   padding-bottom: 3px;
 }
 
-#addDropDown, #removeDropDown{
-  font-size: 36px;
-}
-
 text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg {
     text-align: left;
 }
