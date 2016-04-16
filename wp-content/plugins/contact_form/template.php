@@ -14,19 +14,6 @@
                         <h3 class="modal-title" style="color: white;">
                             Objednávkový formulár
                         </h3>
-                        <p>
-                            Vyplňte objednávkový formulár a závazne odošlite Vašu
-                            <span>
-                                objednávku
-                            </span>
-                            .
-                            <br/>
-                            O priebehu spracovania objednávky Vás budeme informovať na
-                            <span>
-                                email
-                            </span>
-                            zadaný v objednávke.
-                        </p>
                     </div>
                     <div class="modal-body">
                             <div class="row custom">

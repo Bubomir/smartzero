@@ -63,7 +63,7 @@ function insert_to_database()
 {
 	
     include WP_PLUGIN_DIR.'/contact_form/dbconnect.php';
-    mysql_query("SET NAMES 'utf8' ");
+    
     // if the submit button is clicked, insert date to the database
     if (isset($_POST['cf-submitted'])) {
 
@@ -89,6 +89,7 @@ function insert_to_database()
         $data['tax']             = '0';
         $data['store_url']       = 'http://www.smartzero-opencart.dev/';
         $data['shipping_code']   = '[]';
+        $data['store_name']      = 'SmartZero';
 
         $data['product_id'] = array();
         
@@ -147,7 +148,8 @@ function insert_to_database()
             'date_modified' => $data['date'],
             'order_status_id' => $data['order_status_id'],
             'store_url' => $data['store_url'],
-            'shipping_code' => $data['shipping_code']
+            'shipping_code' => $data['shipping_code'],
+            'store_name' => $data['store_name']
         );
 
         foreach ($orders_data as $idx=>$order_data) {
@@ -226,6 +228,12 @@ function insert_to_database()
         if (!$conn->query($sql_order_total) === true) {
             echo "Error: " . $sql_order_total . "<br>" . $conn->error;
         }
+        $sql_order_history = "INSERT INTO oc_order_history (order_id, order_status_id, notify, date_added ) VALUES ('".$last_id."', '".$data['order_status_id']."','0', '".$data['date']."')";
+
+        if (!$conn->query($sql_order_history) === true) {
+            echo "Error: " . $sql_order_history . "<br>" . $conn->error;
+        }
+
         $last_id_product_order = implode(', ', $last_id_product_order);
         $order_products = array();
         $fetch_order_product = "SELECT * FROM oc_order_product WHERE order_product_id IN (".$last_id_product_order.") "; 
@@ -241,7 +249,7 @@ function insert_to_database()
         ob_start();
         include WP_PLUGIN_DIR.'/contact_form/template_mail.php';
         $mail_message = ob_get_clean();
-        deliver_mail($email, $last_id, $mail_message);
+        deliver_mail($data['email'], $last_id, $mail_message);
     }
     $conn->close();
 }
@@ -250,8 +258,8 @@ function deliver_mail($email, $order_number, $mail_message)
 {    
     add_filter( 'wp_mail_content_type', 'wpdocs_set_html_mail_content_type' );
 
-    $multiple_recipients = array('bubomirxxx@gmail.com',$email);    //objednavka@smartzero.sk
-    $subject   = 'Smartzero - Vaša objednávka bola zaevidovaná pod číslom: '.$order_number;
+    $multiple_recipients = array('bubomirxxx@gmail.com', $email);    //objednavka@smartzero.sk
+    $subject   = 'SmartZero.sk - objednávka '.$order_number;
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
     $headers .= "From: Smartzero.sk <smartzero@smartzero.sk>" . "\r\n";
