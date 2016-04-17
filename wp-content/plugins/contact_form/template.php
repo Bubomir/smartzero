@@ -124,6 +124,7 @@
                                     </div>
                                     <input id="bill-total_price" name="cf-total_price" type="hidden">
                                     <input id="id_counter_dropDropdowns_elements" name="cf-counter" type="hidden">
+                                    <input id="id-control_sum" name="cf-control_sum" type="hidden">
                                 </div>
                             </div>
                             <div class="row custom" style="margin-top: 16px;">
