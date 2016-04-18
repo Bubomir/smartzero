@@ -263,7 +263,7 @@ function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice, counte
 }
 //Check if fields are filled
 function checkIfFilled(counterElements) {
-
+    var sending_counterElements = (counterElements+1);
     canShow = false;
     var TotalPrice = new Array();
     for (var i = 0; i <= counterElements; i++) {
@@ -275,7 +275,7 @@ function checkIfFilled(counterElements) {
         var final_price;
         
         if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO && quantity[0].value != ID_EMPTY) {
-            showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'), counterElements, i, TotalPrice);
+            showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'), sending_counterElements, i, TotalPrice);
             canShow = true;
         }
         else{
@@ -287,7 +287,7 @@ function checkIfFilled(counterElements) {
     	
         document.getElementsByClassName('validation')[0].innerHTML = "";
         var counterForPHP = document.getElementById('id_counter_dropDropdowns_elements');
-        counterForPHP.value = counterElements;
+        counterForPHP.value = sending_counterElements;
         var test = jQuery('#myModal').modal('show');
 
         if(jQuery('#myModal').length){
