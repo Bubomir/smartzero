@@ -2287,7 +2287,6 @@ button.close {
   display: block;
   font-size: 120%;
   padding: 0.5em 1.25em;
-  border: 2px solid transparent;
   -webkit-transition: background-color 0.25s, border-color 0.25s;
   transition: background-color 0.25s, border-color 0.25s;
 }
@@ -2300,7 +2299,7 @@ button.close {
   float: right;
   width: 100%;
   display: block;
-  font-size: 120%;
+  font-size: 109%;
   padding: 0.5em 1.25em;
   border: 2px solid transparent;
   -webkit-transition: background-color 0.25s, border-color 0.25s;

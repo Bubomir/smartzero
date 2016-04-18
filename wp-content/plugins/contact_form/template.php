@@ -1,11 +1,11 @@
- <?php if ($_POST['cf-submitted']) {?>
+ <?php if ($_POST['cf-submitted']) { ?>
+
 <script type="text/javascript">
-      document.location.href="odoslany";
+      var test = document.location.href="formular-uspesne-odoslany";
 </script>
 
 <?php } else {?>
-
- <form method="post" action="<?=esc_url($_SERVER['REQUEST_URI'])?>">
+ <form id="cf-contact_form" method="post" action="<?=esc_url($_SERVER['REQUEST_URI'])?>">
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -138,7 +138,7 @@
                         <button type="button" class="ut-btn  theme-btn medium round" data-dismiss="modal" style="margin: 0px;">
                             Zavrieť
                         </button>
-                        <button  name="cf-submitted"  type="submit" class="ut-btn  theme-btn medium round" style="margin: 0px;">
+                        <button class="ut-btn  theme-btn medium round"  name="cf-submitted" formmethod = "post" form="cf-contact_form"  type="submit" value="odoslant" style="margin: 0px;">
                             Odoslať
                         </button>
                     </div>
