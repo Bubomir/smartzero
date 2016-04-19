@@ -1,7 +1,7 @@
  <?php if ($_POST['cf-submitted']) { ?>
 
 <script type="text/javascript">
-      var test = document.location.href="formular-uspesne-odoslany";
+      //var test = document.location.href="formular-uspesne-odoslany";
 </script>
 
 <?php } else {?>

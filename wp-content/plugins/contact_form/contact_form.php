@@ -68,7 +68,9 @@ function insert_to_database()
     
     // if the submit button is clicked, insert date to the database
     if (isset($_POST['cf-submitted'])) {
-
+        $SK = 'Slovenská republika';
+        $CZ = 'Česká republika';
+        
         $data = array();
         $data['control_sum']     = $_POST["cf-control_sum"];
         $data['firstname']       = sanitize_text_field($_POST["cf-firstname"]);
@@ -85,12 +87,25 @@ function insert_to_database()
         $data['date']            = date('Y-m-d H:i:s');
         $data['order_status_id'] = '1'; // 1 = Pending more in openCart DB table oc_order_status
         // $data['device_type']     = sanitize_text_field($_POST["cf-device_type"]);
-        //$data['device_model']    = sanitize_text_field($_POST["cf-device_model"]);
+        // $data['device_model']    = sanitize_text_field($_POST["cf-device_model"]);
         $data['counter']         = $_POST['cf-counter'];
         $data['device_quantity'] = array();
         $data['tax']             = '0';
         $data['store_url']       = 'http://www.smartzero-opencart.dev/';
-        $data['shipping_code']   = '[]';
+
+        switch ($data['country']) {
+            case $SK:
+                $data['shipping_price']  = 0;
+                $data['shipping_code']   = 'xshipping.xshipping1';
+                $data['sub_total_price'] = $data['total_price'];
+                break;
+            case $CZ:
+                $data['shipping_price']  = 2;
+                $data['shipping_code']   = 'xshipping.xshipping2';
+                $data['sub_total_price'] = $data['total_price']-$data['shipping_price'];
+                break;
+        }      
+
         $data['store_name']      = 'SmartZero';
         $data['product_id']      = array();
 
@@ -225,12 +240,18 @@ function insert_to_database()
                 echo "Error: " . $sql_order . "<br>" . $conn->error;
             }
 
-            $sql_order_total = "INSERT INTO oc_order_total (order_id, code, title, value, sort_order ) VALUES ('".$last_id."', 'sub_total', 'Sub-Total' , '".$data['total_price']."', '1')";
+            $sql_order_total_sub = "INSERT INTO oc_order_total (order_id, code, title, value, sort_order ) VALUES ('".$last_id."', 'sub_total', 'Sub-Total' , '".$data['sub_total_price']."', '1')";
 
-            if (!$conn->query($sql_order_total) === true) {
-                echo "Error: " . $sql_order_total . "<br>" . $conn->error;
-            } 
-             $sql_order_total = "INSERT INTO oc_order_total (order_id, code, title, value, sort_order ) VALUES ('".$last_id."', 'total', 'Total' , '".$data['total_price']."', '9')";
+            if (!$conn->query($sql_order_total_sub) === true) {
+                echo "Error: " . $sql_order_total_sub . "<br>" . $conn->error;
+            }
+            $sql_order_total_shipp = "INSERT INTO oc_order_total (order_id, code, title, value, sort_order ) VALUES ('".$last_id."', 'total', 'Doprava' , '".$data['shipping_price']."', '3')";
+            
+            if (!$conn->query($sql_order_total_shipp) === true) {
+                echo "Error: " . $sql_order_total_shipp . "<br>" . $conn->error;
+            }
+
+            $sql_order_total = "INSERT INTO oc_order_total (order_id, code, title, value, sort_order ) VALUES ('".$last_id."', 'total', 'Total' , '".$data['total_price']."', '9')";
             
             if (!$conn->query($sql_order_total) === true) {
                 echo "Error: " . $sql_order_total . "<br>" . $conn->error;
