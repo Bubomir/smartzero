@@ -92,17 +92,22 @@ function insert_to_database()
         $data['device_quantity'] = array();
         $data['tax']             = '0';
         $data['store_url']       = 'http://www.smartzero-opencart.dev/';
-
+        $country_ceck = false;
         switch ($data['country']) {
             case $SK:
                 $data['shipping_price']  = 0;
                 $data['shipping_code']   = 'xshipping.xshipping1';
                 $data['sub_total_price'] = $data['total_price'];
+                $country_ceck = true;
                 break;
             case $CZ:
                 $data['shipping_price']  = 2;
                 $data['shipping_code']   = 'xshipping.xshipping2';
                 $data['sub_total_price'] = $data['total_price']-$data['shipping_price'];
+                $country_ceck = true;
+                break;
+            default:
+                $country_ceck = false;
                 break;
         }      
 
@@ -112,40 +117,21 @@ function insert_to_database()
         $hash = md5($data['counter'].$data['total_price']);
        
 
-        if ($data['control_sum'] == $hash) {
+        if ($data['control_sum'] == $hash && $country_ceck == true) {
             
         
             for ($i=0; $i <= $data['counter']; $i++) { 
                 array_push($data['device_quantity'], sanitize_text_field($_POST["cf-device_quantity-".$i]));
                 array_push($data['product_id'], $_POST["cf-device_model-".$i]);
             }
-
-           
-
-           /* for($i = 0; $i< sizeof($products); $i++){
-                switch ($i) {
-                    case 1:{
-                         echo '<br> test '. $products[$i][$i];
-                        break;
-                    }
-                    case 2:{
-                         echo '<br> test2 '. $products[$i][$i];
-                        break;
-                    }
-                    
-                }
-               
-            }*/
-
-
-            
+             /*   TEST FOR FILLs inputs
             foreach ($data as $key => $value) {
 
                 if ($value == null) {
                     echo 'prazdne  key '.$key.' value '.$value . '<br>';
                 }
                 //echo 'key  '.$value . '<br>';
-            }
+            }*/
 
             $orders_data = array(
                 'firstname' => $data['firstname'],
