@@ -63,6 +63,7 @@ function get_product_type_parse()
 
 function insert_to_database()
 {
+	$test = false;
 	
     include WP_PLUGIN_DIR.'/contact_form/dbconnect.php';
     
@@ -283,9 +284,12 @@ function deliver_mail($email, $order_number, $mail_message)
     $headers .= "From: Smartzero.sk <smartzero@smartzero.sk>" . "\r\n";
    
     // If email has been process for sending, display a success message
-    if (!wp_mail($multiple_recipients, $subject, $mail_message, $headers)) {
-        echo 'Pri objednávke sa vyskytla chyba prosím kontaktujte administrátora';
-    } 
+    if (wp_mail($multiple_recipients, $subject, $mail_message, $headers)) {
+    	//redirect on other web site because of re-sending form in firefox
+        echo "<script type='text/javascript'>document.location.href='formular-uspesne-odoslany';</script>";
+    } else{
+    	echo 'Pri objednávke sa vyskytla chyba prosím kontaktujte administrátora';
+    }
 
     // Reset content-type to avoid conflicts -- https://core.trac.wordpress.org/ticket/23578
     remove_filter( 'wp_mail_content_type', 'wpdocs_set_html_mail_content_type' );

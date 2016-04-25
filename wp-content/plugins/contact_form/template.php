@@ -1,10 +1,3 @@
- <?php if ($_POST['cf-submitted']) { ?>
-
-<script type="text/javascript">
-      //var test = document.location.href="formular-uspesne-odoslany";
-</script>
-
-<?php } else {?>
  <form id="cf-contact_form" method="post" action="<?=esc_url($_SERVER['REQUEST_URI'])?>">
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -216,5 +209,3 @@
                 </div>
         </div>
 </form>
-<?php }
-?>
