@@ -2301,7 +2301,7 @@ button.close {
   display: block;
   font-size: 109%;
   padding: 0.5em 1.25em;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   -webkit-transition: background-color 0.25s, border-color 0.25s;
   transition: background-color 0.25s, border-color 0.25s;
   background-color: #191919;
