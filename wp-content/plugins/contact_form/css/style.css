@@ -2479,6 +2479,7 @@ button.close {
   height: 22px;
   text-align: center;
   color: red;
+  margin-bottom: 10px;
 }
 
 .price-sz {
@@ -2568,4 +2569,8 @@ text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg {
     .text-justify-lg {
         text-align: justify;
     }
+}
+
+.new-picker-line{
+  padding-top: 25px;
 }

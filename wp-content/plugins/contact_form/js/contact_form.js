@@ -52,6 +52,7 @@ var ID_NULL = 'null';
     //Adding listeners for click event
     
     var dropDownElement =  document.getElementById('devicePicker-0').cloneNode(true);
+    dropDownElement.classList.add("new-picker-line");
     var billLinesElement = document.getElementById('id_contact-section-sz-0').cloneNode(true);  
 
     document.getElementById('addDropDown').addEventListener('click', function(){ 
