@@ -2574,3 +2574,12 @@ text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg {
 .new-picker-line{
   padding-top: 25px;
 }
+
+#check-conditions{
+  margin: 4px 0 0;
+}
+
+#id-device_quantity-0, #id-device_quantity-1, #id-device_quantity-2, #id-device_quantity-3, #id-device_quantity-4{
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}

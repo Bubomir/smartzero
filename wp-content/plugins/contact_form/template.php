@@ -122,10 +122,10 @@
                             </div>
                             <div class="row custom" style="margin-top: 16px;">
                                 <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                   <label style="margin-left: 15px;" for="check-conditions" >Prečítal(a) som si a súhlasím s <a href="http://tvrdene-skla.smartzero.sk/obchodne-podmienky">Obchodnými podmienkami</a> </label>
+                                   <label style="margin-left: 15px; color: white;" for="check-conditions" >Prečítal(a) som si a súhlasím s <a href="http://tvrdene-skla.smartzero.sk/obchodne-podmienky">Obchodnými podmienkami</a> </label>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                                   <input style="float: right; margin-right: 15px;" id='check-conditions' type="checkbox" required="required" />
+                                   <input id='check-conditions' type="checkbox" required="required" />
                                 </div>
                             </div>
                     </div>
