@@ -3007,8 +3007,7 @@ select {
 /* Global */
 
 input[type="radio"], input[type="checkbox"] {
-	display:inherit !important;
-	width:inherit !important;	
+	display:inherit !important;	
 }
 input[type="checkbox"] {
 	-webkit-appearance: checkbox!important;
