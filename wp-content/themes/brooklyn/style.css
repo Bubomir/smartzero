@@ -3008,6 +3008,7 @@ select {
 
 input[type="radio"], input[type="checkbox"] {
 	display:inherit !important;	
+	width: inherit !important;
 }
 input[type="checkbox"] {
 	-webkit-appearance: checkbox!important;
