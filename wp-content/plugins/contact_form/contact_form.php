@@ -44,29 +44,30 @@ function html_form_code()
 
 function get_product_type_parse()
 {   
-    include WP_PLUGIN_DIR.'/contact_form/dbconnect.php';
+    require_once WP_PLUGIN_DIR.'/contact_form/dbconnect.php';
    
-    $fetch = "SELECT * FROM oc_category_description ORDER BY name ASC";
-    $result = $conn->query($fetch);
+    $result = $database->select('oc_category_description',array('*'),null, array('name' => 'ASC'));
 
     $html_select = "<select id='id-device_type-0' name='cf-device_type-0' class='form-control' required autocomplete='off'> <option value='null' >-- Vyberte si jednu z možností --</option>";
-    if ($result->num_rows > 0) {
+    if ($result) {
         // output data of each row
-        while($row = $result->fetch_assoc()) {
+        foreach ($result as $row) {
             $html_select .= "<option value=".$row["category_id"]." label=" . $row["name"] . ">" . $row["name"] . "</option>";
         }
     }
     $html_select .= "</select>";
-    $conn->close();
+   // $database->disconnect();
     return $html_select;
 }
 
 function insert_to_database()
 {
-	$test = false;
-	
-    include WP_PLUGIN_DIR.'/contact_form/dbconnect.php';
-    
+    $dbhost = 'localhost';
+    $dbuser = 'root';
+    $dbpass = '';
+    $dbname = 'smartzero-opencart';
+    $database = new DB($dbhost, $dbuser, $dbpass, $dbname);
+   
     // if the submit button is clicked, insert date to the database
     if (isset($_POST['cf-submitted'])) {
         $SK = 'Slovenská republika';
@@ -117,7 +118,7 @@ function insert_to_database()
 
         $hash = md5($data['counter'].$data['total_price']);
        
-
+        
         if ($data['control_sum'] == $hash && $country_ceck == true) {
             
         
@@ -125,15 +126,7 @@ function insert_to_database()
                 array_push($data['device_quantity'], sanitize_text_field($_POST["cf-device_quantity-".$i]));
                 array_push($data['product_id'], $_POST["cf-device_model-".$i]);
             }
-             /*   TEST FOR FILLs inputs
-            foreach ($data as $key => $value) {
-
-                if ($value == null) {
-                    echo 'prazdne  key '.$key.' value '.$value . '<br>';
-                }
-                //echo 'key  '.$value . '<br>';
-            }*/
-
+            
             $orders_data = array(
                 'firstname' => $data['firstname'],
                 'lastname' => $data['surname'],
@@ -166,33 +159,34 @@ function insert_to_database()
             }
             $columns_order_data = implode(", ", array_keys($escaped_values));
             $values_order_data  = implode(", ", $escaped_values);
-
-            $sql_order = "INSERT INTO oc_order ($columns_order_data) VALUES ($values_order_data)";
-
+            
+            $insert_oc_order = $database->insert('oc_order',$orders_data);
             $last_id_product_order = array();
-            if ($conn->query($sql_order) === true) {
-                $last_id = $conn->insert_id;
+           
+            if ($insert_oc_order) {
+                $last_id = $insert_oc_order;
 
                 for ($i=0; $i < $data['counter']; $i++) { 
+                    $where_oc_product = array( 'product_id' => $data['product_id'][$i]);
 
-                    $fetch_devices_names = "SELECT * FROM oc_product_description WHERE product_id = ".$data['product_id'][$i]." "; 
-                    $result_products_names = $conn->query($fetch_devices_names);
-
+                    $result_products_names = $database->select('oc_product_description', array('*'), $where_oc_product);
+                   
+                  
                     $product_nameSK;
                     $product_nameEN;
-                    if ($result_products_names->num_rows > 0) {
+                    if ($result_products_names) {
                         // output data of each row
-                        while($row = $result_products_names->fetch_assoc()) {
+                        foreach ($result_products_names as $row) {
                             $product_nameSK = $row['name'];
                             $product_nameEN = "Tempered glass ".$row['meta_title'];
                         }
                     }
-                    $fetch_devices_price = "SELECT * FROM oc_product WHERE product_id = ".$data['product_id'][$i]." "; 
-                    $result_products_price = $conn->query($fetch_devices_price);
 
-                    if ($result_products_price->num_rows > 0) {
+                 
+                    $result_products_price =  $database->select('oc_product', array('*'), $where_oc_product);
+                    if ($result_products_price) {
                         // output data of each row
-                        while($row = $result_products_price->fetch_assoc()) {
+                        foreach ($result_products_price as $row) {
                             $product_price = $row['price'];
                         }
                     }
@@ -216,50 +210,70 @@ function insert_to_database()
                     $columns_order_data_product = implode(", ", array_keys($escaped_values_product));
                     $values_order_data_product  = implode(", ", $escaped_values_product);
 
-                    $sql_order_product = "INSERT INTO oc_order_product ($columns_order_data_product ) VALUES ($values_order_data_product)";
-                    if (!$conn->query($sql_order_product) === true) {
-                        echo "Error: " . $sql_order_product . "<br>" . $conn->error;
-                    }
-                    array_push($last_id_product_order, $conn->insert_id);                
+                    $insert_order_product = $database->insert('oc_order_product', $order_data_products);
+
+                   
+                    if($insert_order_product){
+                        array_push($last_id_product_order, $insert_order_product);  
+                    }              
                 }
-
+                
             } else {
-                echo "Error: " . $sql_order . "<br>" . $conn->error;
+                echo "Error insert: ";
+            }
+            $oc_order_total_1 = array(
+                'order_id' => $last_id,
+                'code' => 'sub_total',
+                'title' => 'Sub-Total',
+                'value' => $data['sub_total_price'],
+                'sort_order' => '1'
+            );
+            $insert_result = $database->insert('oc_order_total',$oc_order_total_1);
+            if(!$insert_result){
+                echo 'error insert ';
+            }
+          
+            $oc_order_total_2 = array(
+                'order_id' => $last_id,
+                'code' => 'total',
+                'title' => 'Doprava',
+                'value' => $data['shipping_price'],
+                'sort_order' => '3'
+            );
+            $insert_result = $database->insert('oc_order_total',$oc_order_total_2);
+            if(!$insert_result){
+                echo 'error insert ';
             }
 
-            $sql_order_total_sub = "INSERT INTO oc_order_total (order_id, code, title, value, sort_order ) VALUES ('".$last_id."', 'sub_total', 'Sub-Total' , '".$data['sub_total_price']."', '1')";
-
-            if (!$conn->query($sql_order_total_sub) === true) {
-                echo "Error: " . $sql_order_total_sub . "<br>" . $conn->error;
+            $oc_order_total_3 = array(
+                'order_id' => $last_id,
+                'code' => 'total',
+                'title' => 'Total',
+                'value' => $data['total_price'],
+                'sort_order' => '9'
+            );
+            $insert_result = $database->insert('oc_order_total',$oc_order_total_3);
+            if(!$insert_result){
+                echo 'error insert ';
             }
-            $sql_order_total_shipp = "INSERT INTO oc_order_total (order_id, code, title, value, sort_order ) VALUES ('".$last_id."', 'total', 'Doprava' , '".$data['shipping_price']."', '3')";
             
-            if (!$conn->query($sql_order_total_shipp) === true) {
-                echo "Error: " . $sql_order_total_shipp . "<br>" . $conn->error;
+            $oc_order_history = array(
+                'order_id' => $last_id,
+                'order_status_id' => $data['order_status_id'],
+                'notify' => '0',
+                'date_added' => $data['date']
+            );
+            $insert_result = $database->insert('oc_order_history', $oc_order_history);
+           
+            if(!$insert_result){
+                echo 'error insert ';
             }
-
-            $sql_order_total = "INSERT INTO oc_order_total (order_id, code, title, value, sort_order ) VALUES ('".$last_id."', 'total', 'Total' , '".$data['total_price']."', '9')";
-            
-            if (!$conn->query($sql_order_total) === true) {
-                echo "Error: " . $sql_order_total . "<br>" . $conn->error;
-            }
-            $sql_order_history = "INSERT INTO oc_order_history (order_id, order_status_id, notify, date_added ) VALUES ('".$last_id."', '".$data['order_status_id']."','0', '".$data['date']."')";
-
-            if (!$conn->query($sql_order_history) === true) {
-                echo "Error: " . $sql_order_history . "<br>" . $conn->error;
-            }
-
             $last_id_product_order = implode(', ', $last_id_product_order);
             $order_products = array();
-            $fetch_order_product = "SELECT * FROM oc_order_product WHERE order_product_id IN (".$last_id_product_order.") "; 
-            $result_order_product = $conn->query($fetch_order_product);
 
-            if ($result_order_product->num_rows > 0) {
-                // output data of each row
-                while($row = $result_order_product->fetch_assoc()) {
-                     array_push($order_products,  $row);
-                }
-            }
+            
+            $sql = "SELECT * FROM oc_order_product WHERE order_product_id IN (".$last_id_product_order.") "; 
+            $result = $database->custom_sql_select($sql);
            
             ob_start();
             include WP_PLUGIN_DIR.'/contact_form/template_mail.php';
@@ -270,7 +284,7 @@ function insert_to_database()
             echo 'Narušená integrita dát';
         }
     }
-    $conn->close();
+    $database->disconnect();
 }
 
 function deliver_mail($email, $order_number, $mail_message)
@@ -304,7 +318,6 @@ function cf_shortcode()
     ob_start();
     html_form_code();
     insert_to_database();
-
     return ob_get_clean();
 }
 

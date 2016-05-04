@@ -4,28 +4,30 @@ if (isset($_POST['categoryID']) && !empty($_POST['categoryID'])) {
 
     $category_id  = $_POST['categoryID'];
  
-    $fetch_products_id = "SELECT * FROM oc_product_to_category WHERE category_id = '$category_id' ";
-    $result_products_id = $conn->query($fetch_products_id);
-
+    $where = array( 'category_id' => $category_id);
+    $result_products_id = $database->select('oc_product_to_category',array('product_id'),$where);
+    
     $product_id = array();
-     if ($result_products_id->num_rows > 0) {
+     if ($result_products_id) {
         // output data of each row
-        while($row = $result_products_id->fetch_assoc()) {
-           array_push($product_id, $row['product_id']);
+        foreach ($result_products_id as $row) {
+            array_push($product_id, $row['product_id']);
         }
     }
     $product_id = implode(',', $product_id);
-    $fetch_products = "SELECT * FROM oc_product WHERE product_id IN  ($product_id) ";
-    $result_products = $conn->query($fetch_products);
     
+
+    $sql = "SELECT * FROM oc_product WHERE product_id IN  ($product_id) ";
+    $result_products = $database->custom_sql_select($sql);
+           
     $devices_models = array();
-    if ($result_products->num_rows > 0) {
+    if ($result_products) {
         // output data of each row
-        while($row = $result_products->fetch_assoc()) {
-           array_push($devices_models, $row);
+        foreach ($result_products as $row) {
+            array_push($devices_models, $row);
         }
     }
 
-    $conn->close();
+    $database->disconnect();
     echo json_encode($devices_models);
 }

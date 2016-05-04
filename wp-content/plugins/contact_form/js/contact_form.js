@@ -83,13 +83,13 @@ function getElementValue(product_id,counterElements) {
                 type: 'post',
                 dataType: 'json',
                 success: function(output) {
-                    getDevicesModel(output);
+                  getDevicesModel(output);
                 }
             });
-
+            
             function getDevicesModel (data){
                 //remove previout option element
-
+                //console.log('test  ', data);
                 for (var i = dropdown_object.length - 1; i >= 0; i--) {
                     dropdown_object.remove(i);
                 }
