@@ -75,7 +75,7 @@ function getElementValue(product_id,counterElements) {
         if (product_id != ID_NULL) {
             
             //ajax for getting data 
-            jQuery.ajax({
+            var test = jQuery.ajax({
                 url: 'wp-content/plugins/contact_form/ajax_device_model.php',
                 data: {
                     categoryID: product_id
@@ -86,6 +86,7 @@ function getElementValue(product_id,counterElements) {
                   getDevicesModel(output);
                 }
             });
+            console.log('re ',test );
             
             function getDevicesModel (data){
                 //remove previout option element

@@ -252,6 +252,42 @@ Class DB {
 	   	return $prepareArray;
 	}
 
+	public function fetch($result){   
+    $array = array();
+   
+    if($result instanceof mysqli_stmt)
+    {
+        $result->store_result();
+       
+        $variables = array();
+        $data = array();
+        $meta = $result->result_metadata();
+       
+        while($field = $meta->fetch_field())
+            $variables[] = &$data[$field->name]; // pass by reference
+       
+        call_user_func_array(array($result, 'bind_result'), $variables);
+       
+        $i=0;
+        while($result->fetch())
+        {
+            $array[$i] = array();
+            foreach($data as $k=>$v)
+                $array[$i][$k] = $v;
+            $i++;
+           
+            // don't know why, but when I tried $array[] = $data, I got the same one result in all rows
+        }
+    }
+    elseif($result instanceof mysqli_result)
+    {
+        while($row = $result->fetch_assoc())
+            $array[] = $row;
+    }
+   
+    return $array;
+	}
+
 	/*
 		function for dynamic using bind_param function
 		It should be protect before SQL inject hacking
@@ -270,12 +306,9 @@ Class DB {
 			$stmt->execute();
 			switch ($type) {
 				case self::SELECT:{
-					$result = $stmt->get_result();
-					if($result->num_rows > 0){
-						$resultData = array();
-						while($row = $result->fetch_array(MYSQLI_ASSOC)){
-							array_push($resultData, $row);
-						}
+					$resultData = $this->fetch($stmt);
+					
+					if($resultData){
 						$stmt->close();
 						//return selected data array 
 						return $resultData;
