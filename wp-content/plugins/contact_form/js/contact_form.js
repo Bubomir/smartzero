@@ -1,5 +1,6 @@
 //jQuery('#myModal').modal('hide');
 var ID_NULL = 'null';
+var device;
 //Inicialization function must run every time when page is laoded
 (function() {
     //conter for iteration ID, add dropdown element 
@@ -60,10 +61,8 @@ var ID_NULL = 'null';
     });
 
     addListernerDropDown(counterElements);
-
-
+   
 })();
-var prices;
 
 function getElementValue(product_id,counterElements) {
     var ID_NULL = 'null';
@@ -100,7 +99,7 @@ function getElementValue(product_id,counterElements) {
                     //option.setAttribute('data-price', data[i].price);
                     dropdown_object.add(option);
                 }
-                prices = data;
+                device = data;
             }
         }
         else {
@@ -205,9 +204,19 @@ function onInputBlur(ev) {
     }
 }
 function getDevicePrice(deviceID){
-    for (var i = 0; i < prices.length; i++) {
-        if(prices[i].product_id == deviceID){
-            return  prices[i].price;
+    for (var i = 0; i < device.length; i++) {
+        if(device[i].product_id == deviceID){
+            return  device[i].price;
+        }
+        else{
+            false;
+        }
+    }
+}
+function getDeviceImage(deviceID){
+    for (var i = 0; i < device.length; i++) {
+        if(device[i].product_id == deviceID){
+            return  device[i].image;
         }
         else{
             false;
@@ -275,6 +284,28 @@ function showBill(devictTypVal, deviceModelVal, quantityVal, deviceID, counterEl
             }
         });
     }
+}
+function showDeviceThumnail(counterElements){
+    var imagePathPrefix = 'http://www.smartzero-opencart.dev/image/';
+    var imagePath = false;
+    for (var i = 0; i <= counterElements; i++) {
+        var deviceModel = jQuery('select[name=cf-device_model-'+(i)+'] option:selected');
+        if (deviceModel[0].value != ID_NULL) {
+            imagePath = getDeviceImage(deviceModel[0].value);
+        }
+    }
+    if(imagePath){
+        img_create(imagePathPrefix+imagePath);
+        jQuery(img_create(imagePathPrefix+imagePath,null,null,counterElements)).insertAfter('#devicePicker-'+counterElements);
+    }
+}
+function img_create(src, alt, title, counterElements) {
+    var img = document.createElement('img');
+    img.id = 'id_thumnail-'+counterElements;
+    img.src = src;
+    if (alt!=null) img.alt = alt;
+    if (title!=null) img.title = title;
+    return img;
 }
 //Check if fields are filled
 function checkIfFilled(counterElements) {
@@ -376,6 +407,13 @@ function addListernerDropDown(counterElements) {
 
     dropdownDeviceType.addEventListener('change', function(){
         getElementValue(dropdownDeviceType.value, counterElements);
+        showDeviceThumnail(counterElements);
     });
+
+    var dropdownDeviceModel = document.getElementById('id-device_model-'+(counterElements));
+
+    dropdownDeviceModel.addEventListener('change', function(){
+        showDeviceThumnail(counterElements);
+    })
     
 }
