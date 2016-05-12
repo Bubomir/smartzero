@@ -2,12 +2,9 @@
 var ID_NULL = 'null';
 //Inicialization function must run every time when page is laoded
 (function() {
-    
-
     //conter for iteration ID, add dropdown element 
     var counterElements = 0;
-    //it will get all value from txt document
-    getElementValue(counterElements, counterElements);
+    
     document.getElementById('button_order-sz').addEventListener('click', function() {checkIfFilled(counterElements);});
     //document.getElementById("country-sz").selectedIndex = -1;
     // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
@@ -66,11 +63,11 @@ var ID_NULL = 'null';
 
 
 })();
+var prices;
 
 function getElementValue(product_id,counterElements) {
-    var ID_NULL = 0;
+    var ID_NULL = 'null';
     var ID_VYBERTE_MOZNOST = '-- Vyberte si jednu z možností --';
-    
         var dropdown_object = document.getElementById('id-device_model-'+(counterElements));
         if (product_id != ID_NULL) {
             
@@ -86,7 +83,7 @@ function getElementValue(product_id,counterElements) {
                   getDevicesModel(output);
                 }
             });
-            console.log('re ',test );
+           // console.log('re ',test );
             
             function getDevicesModel (data){
                 //remove previout option element
@@ -94,15 +91,16 @@ function getElementValue(product_id,counterElements) {
                 for (var i = dropdown_object.length - 1; i >= 0; i--) {
                     dropdown_object.remove(i);
                 }
-                //create new element by parsing from .txt -> php
+                //create new elemnt
                 for (var i = data.length - 1; i >= 0; i--) {
                     
                     var option = document.createElement("option");
                     option.value = data[i].product_id;
                     option.text = data[i].model;
-                    option.setAttribute('data-price', data[i].price);
+                    //option.setAttribute('data-price', data[i].price);
                     dropdown_object.add(option);
                 }
+                prices = data;
             }
         }
         else {
@@ -206,62 +204,77 @@ function onInputBlur(ev) {
         ev.target.parentNode.classList.remove('input-filled-sz')
     }
 }
-//Callculating all action in form
-function showBill(devictTypVal, deviceModelVal, quantityVal, devicePrice, counterElements, i, TotalPrice) {
-    var dropdownCountry = document.getElementById('country-sz');
-    var billTransport = document.getElementById('bill-transport-sz');
-    var billFinalPrice = document.getElementById('bill-summary-price-sz');
-      
-    if(i == 0){
-        document.getElementById('bill-device-name-sz-'+(i)).innerHTML = 'Model: <br>' + devictTypVal + " " + deviceModelVal;
-        document.getElementById('bill-quantity-sz-'+(i)).innerHTML = 'Počet kusov: <br>' + quantityVal + " ks";
-        document.getElementById('bill-price-sz-'+(i)).innerHTML = 'Cena: <br>' + (quantityVal * devicePrice) + " €";
-        TotalPrice[i] = (quantityVal * devicePrice);
-    }
-    else{
-        document.getElementById('bill-device-name-sz-'+(i)).innerHTML = devictTypVal + " " + deviceModelVal;
-        document.getElementById('bill-quantity-sz-'+(i)).innerHTML = quantityVal + " ks";
-        document.getElementById('bill-price-sz-'+(i)).innerHTML = (quantityVal * devicePrice) + " €";
-        TotalPrice[i] = (quantityVal * devicePrice);
-    }
-     
-    var sum = TotalPrice.reduce(function(a, b) { return a + b; }, 0);
-    var inputTotalPrice = document.getElementById('bill-total_price');
-    var check_sum = document.getElementById('id-control_sum');
-    var final_price;
-    var check_sum_hash;
-    //Listener for country 
-    dropdownCountry.addEventListener('change', function() {
-        switch (dropdownCountry.value) {
-            case "":
-                //Unspecified country
-                billTransport.innerHTML = ""
-                billFinalPrice.innerHTML = "";
-                break;
-            case "Slovenská republika":
-                billTransport.innerHTML = "ZADARMO";
-                //Final price for SK
-                final_price = Number(sum).toFixed(2);
-                //hash for secure sending
-                check_sum_hash = CryptoJS.MD5(counterElements+final_price).toString();
-                check_sum.value = check_sum_hash;
-                
-                inputTotalPrice.value = final_price;
-                billFinalPrice.innerHTML = final_price + " €";
-                break;
-            case "Česká republika":
-                billTransport.innerHTML = "+2 €";
-                //Final price for CZ
-                final_price = Number(sum+2).toFixed(2);
-                //hash for secure sending
-                check_sum_hash = CryptoJS.MD5(counterElements+final_price).toString();
-                check_sum.value = check_sum_hash;
-                
-                inputTotalPrice.value = final_price;
-                billFinalPrice.innerHTML = final_price + " €";
-                break;
+function getDevicePrice(deviceID){
+    for (var i = 0; i < prices.length; i++) {
+        if(prices[i].product_id == deviceID){
+            return  prices[i].price;
         }
-    });
+        else{
+            false;
+        }
+    }
+}
+//Callculating all action in form
+function showBill(devictTypVal, deviceModelVal, quantityVal, deviceID, counterElements, i, TotalPrice) {
+    
+    var devicePrice = getDevicePrice(deviceID);
+    
+    if(devicePrice){
+        var dropdownCountry = document.getElementById('country-sz');
+        var billTransport = document.getElementById('bill-transport-sz');
+        var billFinalPrice = document.getElementById('bill-summary-price-sz');
+          
+        if(i == 0){
+            document.getElementById('bill-device-name-sz-'+(i)).innerHTML = 'Model: <br>' + devictTypVal + " " + deviceModelVal;
+            document.getElementById('bill-quantity-sz-'+(i)).innerHTML = 'Počet kusov: <br>' + quantityVal + " ks";
+            document.getElementById('bill-price-sz-'+(i)).innerHTML = 'Cena: <br>' + (quantityVal * devicePrice) + " €";
+            TotalPrice[i] = (quantityVal * devicePrice);
+        }
+        else{
+            document.getElementById('bill-device-name-sz-'+(i)).innerHTML = devictTypVal + " " + deviceModelVal;
+            document.getElementById('bill-quantity-sz-'+(i)).innerHTML = quantityVal + " ks";
+            document.getElementById('bill-price-sz-'+(i)).innerHTML = (quantityVal * devicePrice) + " €";
+            TotalPrice[i] = (quantityVal * devicePrice);
+        }
+         
+        var sum = TotalPrice.reduce(function(a, b) { return a + b; }, 0);
+        var inputTotalPrice = document.getElementById('bill-total_price');
+        var check_sum = document.getElementById('id-control_sum');
+        var final_price;
+        var check_sum_hash;
+        //Listener for country 
+        dropdownCountry.addEventListener('change', function() {
+            switch (dropdownCountry.value) {
+                case "":
+                    //Unspecified country
+                    billTransport.innerHTML = ""
+                    billFinalPrice.innerHTML = "";
+                    break;
+                case "Slovenská republika":
+                    billTransport.innerHTML = "ZADARMO";
+                    //Final price for SK
+                    final_price = Number(sum).toFixed(2);
+                    //hash for secure sending
+                    check_sum_hash = CryptoJS.MD5(counterElements+final_price).toString();
+                    check_sum.value = check_sum_hash;
+                    
+                    inputTotalPrice.value = final_price;
+                    billFinalPrice.innerHTML = final_price + " €";
+                    break;
+                case "Česká republika":
+                    billTransport.innerHTML = "+2 €";
+                    //Final price for CZ
+                    final_price = Number(sum+2).toFixed(2);
+                    //hash for secure sending
+                    check_sum_hash = CryptoJS.MD5(counterElements+final_price).toString();
+                    check_sum.value = check_sum_hash;
+                    
+                    inputTotalPrice.value = final_price;
+                    billFinalPrice.innerHTML = final_price + " €";
+                    break;
+            }
+        });
+    }
 }
 //Check if fields are filled
 function checkIfFilled(counterElements) {
@@ -277,7 +290,7 @@ function checkIfFilled(counterElements) {
         var final_price;
         
         if (deviceType[0].value != ID_NULL && deviceModel[0].value != ID_NULL && quantity[0].value != ID_ZERO && quantity[0].value != ID_EMPTY) {
-            showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].getAttribute('data-price'), sending_counterElements, i, TotalPrice);
+            showBill(deviceType[0].text, deviceModel[0].text, quantity[0].value, deviceModel[0].value, sending_counterElements, i, TotalPrice);
             canShow = true;
         }
         else{
@@ -360,7 +373,6 @@ function addListernerDropDown(counterElements) {
     document.getElementById('button_decrement-sz-'+(counterElements)).addEventListener('click', numberDecrement);
 
     var dropdownDeviceType = document.getElementById('id-device_type-'+(counterElements));
-
 
     dropdownDeviceType.addEventListener('change', function(){
         getElementValue(dropdownDeviceType.value, counterElements);
