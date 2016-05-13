@@ -208,20 +208,16 @@ function getDevicePrice(deviceID){
         if(device[i].product_id == deviceID){
             return  device[i].price;
         }
-        else{
-            false;
-        }
     }
+    return false;
 }
 function getDeviceImage(deviceID){
     for (var i = 0; i < device.length; i++) {
         if(device[i].product_id == deviceID){
             return  device[i].image;
         }
-        else{
-            false;
-        }
     }
+    return false;
 }
 //Callculating all action in form
 function showBill(devictTypVal, deviceModelVal, quantityVal, deviceID, counterElements, i, TotalPrice) {
@@ -288,15 +284,22 @@ function showBill(devictTypVal, deviceModelVal, quantityVal, deviceID, counterEl
 function showDeviceThumnail(counterElements){
     var imagePathPrefix = 'http://www.smartzero-opencart.dev/image/';
     var imagePath = false;
-    for (var i = 0; i <= counterElements; i++) {
-        var deviceModel = jQuery('select[name=cf-device_model-'+(i)+'] option:selected');
-        if (deviceModel[0].value != ID_NULL) {
-            imagePath = getDeviceImage(deviceModel[0].value);
+    var deviceModel = jQuery('select[name=cf-device_model-'+(counterElements)+'] option:selected');
+
+    if (deviceModel[0].value != ID_NULL) {
+        imagePath = getDeviceImage(deviceModel[0].value);
+        if(imagePath){
+            if(jQuery('#id_thumnail-'+counterElements).length){
+                jQuery('#id_thumnail-'+counterElements).remove();
+            }
+                var imageElement = img_create(imagePathPrefix+imagePath,null,null,counterElements);
+                jQuery(imageElement).insertAfter('#devicePicker-'+counterElements);
         }
-    }
-    if(imagePath){
-        img_create(imagePathPrefix+imagePath);
-        jQuery(img_create(imagePathPrefix+imagePath,null,null,counterElements)).insertAfter('#devicePicker-'+counterElements);
+        else{
+            if(jQuery('#id_thumnail-'+counterElements).length){
+                jQuery('#id_thumnail-'+counterElements).remove();
+            }
+        }
     }
 }
 function img_create(src, alt, title, counterElements) {
@@ -380,7 +383,11 @@ function addDropDown(dropDownElement, billLinesElement, counterElements){
 
     //Ak existuje už nevytvorý novy
     if(!jQuery('#devicePicker-'+(counterElements+1)).length && counterElements < 4){
-        jQuery(dropDownElement.outerHTML).insertAfter('#devicePicker-'+counterElements);
+        if(jQuery('#id_thumnail-'+counterElements).length){
+            jQuery(dropDownElement.outerHTML).insertAfter('#id_thumnail-'+counterElements);
+        }else{
+            jQuery(dropDownElement.outerHTML).insertAfter('#devicePicker-'+counterElements);
+        }
         counterElements++;   
         addBillLines(billLinesElement,counterElements);
         addListernerDropDown(counterElements);
@@ -391,9 +398,12 @@ function removeDropDown(lastDropdownId){
 
     //delete dropdown menu
     if(jQuery('#devicePicker-'+lastDropdownId).length && lastDropdownId > 0){
-       jQuery('#devicePicker-'+lastDropdownId).remove();
-       jQuery('#id_contact-section-sz-'+lastDropdownId).remove();
-       lastDropdownId--;
+        jQuery('#devicePicker-'+lastDropdownId).remove();
+        jQuery('#id_contact-section-sz-'+lastDropdownId).remove();
+        if(jQuery('#id_thumnail-'+lastDropdownId).length){
+            jQuery('#id_thumnail-'+lastDropdownId).remove();
+        }
+        lastDropdownId--;
     }
 
     return lastDropdownId;
