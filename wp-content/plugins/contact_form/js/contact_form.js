@@ -142,7 +142,6 @@ function getElementValue(product_id,counterElements) {
             option.value = 'null';
             dropdown_object.add(option);
         }
-    
 }
 //registering only numbers pushed on keyboard
 function AllowOnlyNumbers(e) {
@@ -314,16 +313,19 @@ function showDeviceThumnail(counterElements){
     var imagePathPrefix = 'http://www.smartzero-opencart.dev/image/';
     var imagePath = false;
     var deviceModel = jQuery('select[name=cf-device_model-'+(counterElements)+'] option:selected');
-
+   
     if (deviceModel[0].value != ID_NULL) {
         imagePath = getDeviceImage(deviceModel[0].value);
+   
         if(imagePath){
             jQuery('#thumbnail-'+counterElements).attr('src', imagePathPrefix+imagePath);
         }
         else{
             jQuery('#thumbnail-'+counterElements).attr('src', '/wp-content/plugins/contact_form/img/no-image-available.jpg');
         }
-
+    }
+    else{
+    	jQuery('#thumbnail-'+counterElements).attr('src', '/wp-content/plugins/contact_form/img/no-image-available.jpg');
     }
 }
 /*
@@ -440,7 +442,9 @@ function addListernerDropDown(counterElements) {
 
     dropdownDeviceType.addEventListener('change', function(){
         getElementValue(dropdownDeviceType.value, counterElements);
-        showDeviceThumnail(counterElements);
+        
+       	showDeviceThumnail(counterElements);
+        
     });
 
     var dropdownDeviceModel = document.getElementById('id-device_model-'+(counterElements));
