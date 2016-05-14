@@ -289,22 +289,23 @@ function showDeviceThumnail(counterElements){
     if (deviceModel[0].value != ID_NULL) {
         imagePath = getDeviceImage(deviceModel[0].value);
         if(imagePath){
-            if(jQuery('#id_thumnail-'+counterElements).length){
-                jQuery('#id_thumnail-'+counterElements).remove();
+            if(jQuery('#id_thumbnail-'+counterElements).length){
+                jQuery('#id_thumbnail-'+counterElements).remove();
             }
                 var imageElement = img_create(imagePathPrefix+imagePath,null,null,counterElements);
                 jQuery(imageElement).insertAfter('#devicePicker-'+counterElements);
         }
         else{
-            if(jQuery('#id_thumnail-'+counterElements).length){
-                jQuery('#id_thumnail-'+counterElements).remove();
+            if(jQuery('#id_thumbnail-'+counterElements).length){
+                jQuery('#id_thumbnail-'+counterElements).remove();
             }
         }
     }
 }
 function img_create(src, alt, title, counterElements) {
     var img = document.createElement('img');
-    img.id = 'id_thumnail-'+counterElements;
+    img.id = 'id_thumbnail-'+counterElements;
+    img.class = 'thumbnail_image';
     img.src = src;
     if (alt!=null) img.alt = alt;
     if (title!=null) img.title = title;
@@ -383,8 +384,8 @@ function addDropDown(dropDownElement, billLinesElement, counterElements){
 
     //Ak existuje už nevytvorý novy
     if(!jQuery('#devicePicker-'+(counterElements+1)).length && counterElements < 4){
-        if(jQuery('#id_thumnail-'+counterElements).length){
-            jQuery(dropDownElement.outerHTML).insertAfter('#id_thumnail-'+counterElements);
+        if(jQuery('#id_thumbnail-'+counterElements).length){
+            jQuery(dropDownElement.outerHTML).insertAfter('#id_thumbnail-'+counterElements);
         }else{
             jQuery(dropDownElement.outerHTML).insertAfter('#devicePicker-'+counterElements);
         }
@@ -400,8 +401,8 @@ function removeDropDown(lastDropdownId){
     if(jQuery('#devicePicker-'+lastDropdownId).length && lastDropdownId > 0){
         jQuery('#devicePicker-'+lastDropdownId).remove();
         jQuery('#id_contact-section-sz-'+lastDropdownId).remove();
-        if(jQuery('#id_thumnail-'+lastDropdownId).length){
-            jQuery('#id_thumnail-'+lastDropdownId).remove();
+        if(jQuery('#id_thumbnail-'+lastDropdownId).length){
+            jQuery('#id_thumbnail-'+lastDropdownId).remove();
         }
         lastDropdownId--;
     }
