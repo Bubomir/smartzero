@@ -324,12 +324,11 @@ function showDeviceThumnail(counterElements){
             jQuery('#thumbnail-'+counterElements).attr('src', imagePathPrefix+imagePath);
         }
         else{
-            if(jQuery('#thumbnail-'+counterElements).length){
-                jQuery('#thumbnail-'+counterElements).remove();
-            }
+            jQuery('#thumbnail-'+counterElements).attr('src', '/wp-content/plugins/contact_form/img/no-image-available.jpg');
         }
     }
 }
+/*
 function img_create(src, alt, title, counterElements) {
     var img = document.createElement('img');
     img.id = 'thumbnail-'+counterElements;
@@ -339,6 +338,7 @@ function img_create(src, alt, title, counterElements) {
     if (title!=null) img.title = title;
     return img;
 }
+*/
 //Check if fields are filled
 function checkIfFilled(counterElements) {
     var sending_counterElements = (counterElements+1);
