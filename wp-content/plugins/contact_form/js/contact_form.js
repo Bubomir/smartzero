@@ -54,15 +54,47 @@ var device;
     var billLinesElement = document.getElementById('id_contact-section-sz-0').cloneNode(true);  
 
     document.getElementById('addDropDown').addEventListener('click', function(){ 
+    	
         counterElements = addDropDown(dropDownElement, billLinesElement, counterElements);
+        initializeLightBox(counterElements);
     });
     document.getElementById('removeDropDown').addEventListener('click', function(){
         counterElements = removeDropDown(counterElements);
     });
 
     addListernerDropDown(counterElements);
-   
+    
+    initializeLightBox(counterElements);
+    closeLightBox();
 })();
+
+function initializeLightBox(counterElements){
+	jQuery('.light-box').click(function(){
+        var srcOfThumbnailforLightBox = document.getElementById('thumbnail-'+counterElements).src;
+        console.log('tset ', srcOfThumbnailforLightBox);
+        jQuery('.device-picture').attr('src', srcOfThumbnailforLightBox);
+        jQuery('.backdrop').animate({opacity: 0.50}, 300, 'linear');
+        jQuery('.box').css('display', 'block');
+        jQuery('.backdrop').css('display', 'block');
+    });
+}
+
+function closeLightBox (){
+    jQuery('.close').click(function(){
+        close();
+    });
+    jQuery('.backdrop').click(function(){
+       close();
+    });
+}
+
+function close(){
+    jQuery('.backdrop').animate({opacity: 0}, 300, 'linear', function(){
+        jQuery('.box').css('display', 'none');
+        jQuery('.backdrop').css('display', 'none');
+    });
+}
+
 
 function getElementValue(product_id,counterElements) {
     var ID_NULL = 'null';
@@ -289,23 +321,19 @@ function showDeviceThumnail(counterElements){
     if (deviceModel[0].value != ID_NULL) {
         imagePath = getDeviceImage(deviceModel[0].value);
         if(imagePath){
-            if(jQuery('#id_thumbnail-'+counterElements).length){
-                jQuery('#id_thumbnail-'+counterElements).remove();
-            }
-                var imageElement = img_create(imagePathPrefix+imagePath,null,null,counterElements);
-                jQuery(imageElement).insertAfter('#devicePicker-'+counterElements);
+            jQuery('#thumbnail-'+counterElements).attr('src', imagePathPrefix+imagePath);
         }
         else{
-            if(jQuery('#id_thumbnail-'+counterElements).length){
-                jQuery('#id_thumbnail-'+counterElements).remove();
+            if(jQuery('#thumbnail-'+counterElements).length){
+                jQuery('#thumbnail-'+counterElements).remove();
             }
         }
     }
 }
 function img_create(src, alt, title, counterElements) {
     var img = document.createElement('img');
-    img.id = 'id_thumbnail-'+counterElements;
-    img.class = 'thumbnail_image';
+    img.id = 'thumbnail-'+counterElements;
+    img.class = 'thumbnail-device';
     img.src = src;
     if (alt!=null) img.alt = alt;
     if (title!=null) img.title = title;
@@ -372,7 +400,7 @@ function addDropDown(dropDownElement, billLinesElement, counterElements){
 
     dropDownElement.id = 'devicePicker-'+(counterElements+1);
         //vytvorí ho ked stalčí hocičo okrem iné
-                
+       
     dropDownElement.childNodes[1].childNodes[1].childNodes[3].childNodes[3].name = "cf-device_type-"+(counterElements+1);
     dropDownElement.childNodes[1].childNodes[1].childNodes[3].childNodes[3].id = 'id-device_type-'+(counterElements+1);
     dropDownElement.childNodes[3].childNodes[1].childNodes[3].childNodes[2].name = "cf-device_model-"+(counterElements+1);
@@ -381,14 +409,11 @@ function addDropDown(dropDownElement, billLinesElement, counterElements){
     dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[1].id = 'id-device_quantity-'+(counterElements+1);
     dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[3].id = 'button_decrement-sz-'+(counterElements+1);
     dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[5].id = 'button_increment-sz-'+(counterElements+1);
+    dropDownElement.childNodes[7].childNodes[3].childNodes[1].childNodes[3].id = 'thumbnail-'+(counterElements+1);
 
     //Ak existuje už nevytvorý novy
     if(!jQuery('#devicePicker-'+(counterElements+1)).length && counterElements < 4){
-        if(jQuery('#id_thumbnail-'+counterElements).length){
-            jQuery(dropDownElement.outerHTML).insertAfter('#id_thumbnail-'+counterElements);
-        }else{
-            jQuery(dropDownElement.outerHTML).insertAfter('#devicePicker-'+counterElements);
-        }
+        jQuery(dropDownElement.outerHTML).insertAfter('#devicePicker-'+counterElements);
         counterElements++;   
         addBillLines(billLinesElement,counterElements);
         addListernerDropDown(counterElements);
@@ -401,9 +426,7 @@ function removeDropDown(lastDropdownId){
     if(jQuery('#devicePicker-'+lastDropdownId).length && lastDropdownId > 0){
         jQuery('#devicePicker-'+lastDropdownId).remove();
         jQuery('#id_contact-section-sz-'+lastDropdownId).remove();
-        if(jQuery('#id_thumbnail-'+lastDropdownId).length){
-            jQuery('#id_thumbnail-'+lastDropdownId).remove();
-        }
+        
         lastDropdownId--;
     }
 
@@ -428,3 +451,5 @@ function addListernerDropDown(counterElements) {
     })
     
 }
+
+

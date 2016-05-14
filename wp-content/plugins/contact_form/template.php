@@ -140,10 +140,17 @@
                 </div>
             </div>
         </div>
+        <!-- LightBox -->
+        <div class="backdrop"></div>
+        <div class="box">
+        <div class="close">X</div>
+            <img class="device-picture" src="/wp-content/plugins/contact_form/img/no-image-available.jpg" alt="telefphone">
+        </div>
+
         <!-- DropDows and Button -->
         <div class="container-contact-form-sz">
                 <div id="devicePicker-0" class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-3 col-md-3">
                         <div class="form-group">
                             <label>
                                 Značka
@@ -153,9 +160,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3 col-md-3">
                         <div class="form-group">
-                           
                                 <label>
                                     Model zariadenia
                                 </label>
@@ -168,7 +174,7 @@
                             
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3 col-md-3">
                          <div class="form-group">
                             <label>
                                 Množstvo
@@ -185,8 +191,17 @@
                             </div>
                         </div>
                     </div>
-                   
+                    <div class="col-lg-3 col-md-3">
+                        <div class="thumbnail-head">Vybrané zariadenie</div>
+                        <div class = "light-box">
+                        <div class="thumbnail-form text-center-sm text-center-xs">
+                            <span>Kliknite pre zväčšenie</span>
+                            <img id="thumbnail-0" class="thumbnail-device" src="/wp-content/plugins/contact_form/img/no-image-available.jpg" alt="model"></img>
+                        </div>
+                        </div>
+                    </div>
                 </div>
+                
                 <div class="validation"></div>
                 <div class="row">
                 	<div class="col-lg-6 col-lg-offset-0" >
