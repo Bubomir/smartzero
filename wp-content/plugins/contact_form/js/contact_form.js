@@ -67,10 +67,8 @@ var device;
 })();
 
 function initializeLightBox(counterElements){
-	console.log('tset ', counterElements);
 	jQuery('#id_light-box-'+counterElements).click(function(){
         var srcOfThumbnailforLightBox = document.getElementById('thumbnail-'+counterElements).src;
-        
         jQuery('.device-picture').attr('src', srcOfThumbnailforLightBox);
         jQuery('.backdrop').animate({opacity: 0.50}, 300, 'linear');
         jQuery('.box').css('display', 'block');
