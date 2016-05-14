@@ -51,27 +51,26 @@ var device;
     
     var dropDownElement =  document.getElementById('devicePicker-0').cloneNode(true);
     dropDownElement.classList.add("new-picker-line");
-    var billLinesElement = document.getElementById('id_contact-section-sz-0').cloneNode(true);  
+    var billLinesElement = document.getElementById('id_contact-section-sz-0').cloneNode(true); 
 
+    
     document.getElementById('addDropDown').addEventListener('click', function(){ 
-    	
         counterElements = addDropDown(dropDownElement, billLinesElement, counterElements);
         initializeLightBox(counterElements);
     });
     document.getElementById('removeDropDown').addEventListener('click', function(){
         counterElements = removeDropDown(counterElements);
     });
-
-    addListernerDropDown(counterElements);
-    
     initializeLightBox(counterElements);
+    addListernerDropDown(counterElements);
     closeLightBox();
 })();
 
 function initializeLightBox(counterElements){
-	jQuery('.light-box').click(function(){
+	console.log('tset ', counterElements);
+	jQuery('#id_light-box-'+counterElements).click(function(){
         var srcOfThumbnailforLightBox = document.getElementById('thumbnail-'+counterElements).src;
-        console.log('tset ', srcOfThumbnailforLightBox);
+        
         jQuery('.device-picture').attr('src', srcOfThumbnailforLightBox);
         jQuery('.backdrop').animate({opacity: 0.50}, 300, 'linear');
         jQuery('.box').css('display', 'block');
@@ -326,6 +325,7 @@ function showDeviceThumnail(counterElements){
         else{
             jQuery('#thumbnail-'+counterElements).attr('src', '/wp-content/plugins/contact_form/img/no-image-available.jpg');
         }
+
     }
 }
 /*
@@ -409,6 +409,7 @@ function addDropDown(dropDownElement, billLinesElement, counterElements){
     dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[1].id = 'id-device_quantity-'+(counterElements+1);
     dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[3].id = 'button_decrement-sz-'+(counterElements+1);
     dropDownElement.childNodes[5].childNodes[1].childNodes[3].childNodes[5].id = 'button_increment-sz-'+(counterElements+1);
+    dropDownElement.childNodes[7].childNodes[3].id = 'id_light-box-'+(counterElements+1);
     dropDownElement.childNodes[7].childNodes[3].childNodes[1].childNodes[3].id = 'thumbnail-'+(counterElements+1);
 
     //Ak existuje už nevytvorý novy

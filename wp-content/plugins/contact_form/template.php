@@ -193,11 +193,11 @@
                     </div>
                     <div class="col-lg-3 col-md-3">
                         <div class="thumbnail-head">Vybrané zariadenie</div>
-                        <div class = "light-box">
-                        <div class="thumbnail-form text-center-sm text-center-xs">
-                            <span>Kliknite pre zväčšenie</span>
-                            <img id="thumbnail-0" class="thumbnail-device" src="/wp-content/plugins/contact_form/img/no-image-available.jpg" alt="model"></img>
-                        </div>
+                        <div id="id_light-box-0" class = "light-box">
+                            <div class="thumbnail-form text-center-sm text-center-xs">
+                                <span>Kliknite pre zväčšenie</span>
+                                <img id="thumbnail-0" class="thumbnail-device" src="/wp-content/plugins/contact_form/img/no-image-available.jpg" alt="model"></img>
+                            </div>
                         </div>
                     </div>
                 </div>
