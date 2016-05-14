@@ -2677,7 +2677,7 @@ text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg {
   }
 }
 
-@media (min-width: 250px) and (max-width: 400px) {
+@media (min-width: 0px) and (max-width: 400px) {
   .box{
     width: 250px;
     height: 250px;
@@ -2687,4 +2687,8 @@ text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg {
     width: 250px;
     height: 200px;
   }
+}
+
+.light-box:hover{
+  color: white;
 }
