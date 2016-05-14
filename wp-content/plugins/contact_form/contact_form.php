@@ -65,7 +65,7 @@ function insert_to_database()
     $dbhost = 'localhost';
     $dbuser = 'root';
     $dbpass = '';
-    $dbname = 'smartzero-opencart';
+    $dbname = 'smartzero-opencard';
     $database = new DB($dbhost, $dbuser, $dbpass, $dbname);
    
     // if the submit button is clicked, insert date to the database

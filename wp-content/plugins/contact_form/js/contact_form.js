@@ -61,8 +61,35 @@ var device;
     });
 
     addListernerDropDown(counterElements);
-   
+    
+    jQuery('.light-box').click(function(){
+        //var srcOfThumbnailforLightBox = document.getElementById('id_thumnail-0').src;
+        //jQuery('.device-picture').attr('src', srcOfThumbnailforLightBox);
+        jQuery('.backdrop').animate({opacity: 0.50}, 300, 'linear');
+        jQuery('.box').css('display', 'block');
+        jQuery('.backdrop').css('display', 'block');
+    });
+
+    closeLightBox();
 })();
+
+
+function closeLightBox (){
+    jQuery('.close').click(function(){
+        close();
+    });
+    jQuery('.backdrop').click(function(){
+       close();
+    });
+}
+
+function close(){
+    jQuery('.backdrop').animate({opacity: 0}, 300, 'linear', function(){
+        jQuery('.box').css('display', 'none');
+        jQuery('.backdrop').css('display', 'none');
+    });
+}
+
 
 function getElementValue(product_id,counterElements) {
     var ID_NULL = 'null';
@@ -282,16 +309,18 @@ function showBill(devictTypVal, deviceModelVal, quantityVal, deviceID, counterEl
     }
 }
 function showDeviceThumnail(counterElements){
-    var imagePathPrefix = 'http://www.smartzero-opencart.dev/image/';
+    var imagePathPrefix = 'http://www.smartzero-opencard.dev/image/';
     var imagePath = false;
     var deviceModel = jQuery('select[name=cf-device_model-'+(counterElements)+'] option:selected');
 
     if (deviceModel[0].value != ID_NULL) {
         imagePath = getDeviceImage(deviceModel[0].value);
         if(imagePath){
+            
             if(jQuery('#id_thumnail-'+counterElements).length){
                 jQuery('#id_thumnail-'+counterElements).remove();
             }
+                //jQuery('#id_thumnail-'+counterElements).attr('src', imagePathPrefix+imagePath);
                 var imageElement = img_create(imagePathPrefix+imagePath,null,null,counterElements);
                 jQuery(imageElement).insertAfter('#devicePicker-'+counterElements);
         }
@@ -427,3 +456,5 @@ function addListernerDropDown(counterElements) {
     })
     
 }
+
+
