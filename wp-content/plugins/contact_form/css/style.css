@@ -2479,6 +2479,7 @@ button.close {
   height: 22px;
   text-align: center;
   color: red;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
@@ -2662,4 +2663,28 @@ text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg {
   width: 600px;
   height: 500px;
   margin-top: 10px;
+}
+
+@media (min-width: 400px) and (max-width: 610px) {
+  .box{
+    width: 400px;
+    height: 350px;
+  }
+
+  .device-picture{
+    width: 400px;
+    height: 300px;
+  }
+}
+
+@media (min-width: 250px) and (max-width: 400px) {
+  .box{
+    width: 250px;
+    height: 250px;
+  }
+
+  .device-picture{
+    width: 250px;
+    height: 200px;
+  }
 }
