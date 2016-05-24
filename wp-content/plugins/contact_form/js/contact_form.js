@@ -64,6 +64,7 @@ var device = [];
     initializeLightBox(counterElements);
     addListernerDropDown(counterElements);
     closeLightBox();
+    formValidateForSafari();
 })();
 
 function initializeLightBox(counterElements){
@@ -453,5 +454,21 @@ function addListernerDropDown(counterElements) {
     })
     
 }
+function formValidateForSafari(){
+	var forms = document.getElementById('cf-contact_form');
+	
+	for (var i = 0; i < forms.length; i++) {
+	    forms[i].noValidate = true;
 
+	    forms[i].addEventListener('submit', function(event) {
+	    	console.log('tes ', event);
+	        //Prevent submission if checkValidity on the form returns false.
+	        if (!event.target.checkValidity()) {
+	            event.preventDefault();
+
+	            //Implement you own means of displaying error messages to the user here.
+	        }
+	    }, false);
+	}
+}
 

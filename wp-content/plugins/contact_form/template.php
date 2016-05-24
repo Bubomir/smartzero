@@ -1,4 +1,4 @@
- <form id="cf-contact_form" method="post" action="<?=esc_url($_SERVER['REQUEST_URI'])?>">
+ <form id="cf-contact_form"  method="post" action="<?=esc_url($_SERVER['REQUEST_URI'])?>">
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
