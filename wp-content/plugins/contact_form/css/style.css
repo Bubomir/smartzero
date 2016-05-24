@@ -2437,7 +2437,7 @@ button.close {
 
 .modal-body {
   background: #111111;
-  padding-bottom: 40px;
+  padding-bottom: 8px;
   padding-left: 40px;
   padding-right: 40px;
   padding-top: 0px;
@@ -2476,6 +2476,14 @@ button.close {
 }
 
 .validation {
+  height: 22px;
+  text-align: center;
+  color: red;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.validationSafari {
   height: 22px;
   text-align: center;
   color: red;

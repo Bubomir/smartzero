@@ -128,6 +128,7 @@
                                    <input id='check-conditions' type="checkbox" required="required" />
                                 </div>
                             </div>
+                            <div class="validationSafari"></div>
                     </div>
                     <div class="modal-footer" style="text-align: center;">
                         <button type="button" class="ut-btn  theme-btn medium round" data-dismiss="modal" style="margin: 0px;">

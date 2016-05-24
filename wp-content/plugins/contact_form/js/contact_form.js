@@ -455,8 +455,10 @@ function addListernerDropDown(counterElements) {
     
 }
 function formValidateForSafari(){
-	var forms = document.getElementById('cf-contact_form');
+    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+	var forms = document.getElementsByTagName('form');
 	
+    if(isSafari === true){
 	for (var i = 0; i < forms.length; i++) {
 	    forms[i].noValidate = true;
 
@@ -465,10 +467,11 @@ function formValidateForSafari(){
 	        //Prevent submission if checkValidity on the form returns false.
 	        if (!event.target.checkValidity()) {
 	            event.preventDefault();
-
+                document.getElementsByClassName('validationSafari')[0].innerHTML = "Všetky polia musia byť vyplnené!!!";
 	            //Implement you own means of displaying error messages to the user here.
 	        }
 	    }, false);
 	}
+    }
 }
 
