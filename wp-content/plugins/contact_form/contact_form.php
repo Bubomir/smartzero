@@ -117,11 +117,9 @@ function insert_to_database()
         $data['product_id']      = array();
 
         $hash = md5($data['counter'].$data['total_price']);
-       
         
         if ($data['control_sum'] == $hash && $country_ceck == true) {
             
-        
             for ($i=0; $i <= $data['counter']; $i++) { 
                 array_push($data['device_quantity'], sanitize_text_field($_POST["cf-device_quantity-".$i]));
                 array_push($data['product_id'], $_POST["cf-device_model-".$i]);
@@ -269,12 +267,10 @@ function insert_to_database()
                 echo 'error insert ';
             }
             $last_id_product_order = implode(', ', $last_id_product_order);
-            $order_products = array();
-
-            
+                        
             $sql = "SELECT * FROM oc_order_product WHERE order_product_id IN (".$last_id_product_order.") "; 
-            $result = $database->custom_sql_select($sql);
-           
+            $order_products = $database->custom_sql_select($sql);
+                      	
             ob_start();
             include WP_PLUGIN_DIR.'/contact_form/template_mail.php';
             $mail_message = ob_get_clean();
@@ -300,7 +296,7 @@ function deliver_mail($email, $order_number, $mail_message)
     // If email has been process for sending, display a success message
     if (wp_mail($multiple_recipients, $subject, $mail_message, $headers)) {
     	//redirect on other web site because of re-sending form in firefox
-        echo "<script type='text/javascript'>document.location.href='formular-uspesne-odoslany';</script>";
+        //echo "<script type='text/javascript'>document.location.href='formular-uspesne-odoslany';</script>";
     } else{
     	echo 'Pri objednávke sa vyskytla chyba prosím kontaktujte administrátora';
     }
