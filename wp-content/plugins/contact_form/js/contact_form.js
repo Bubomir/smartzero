@@ -1,6 +1,6 @@
 //jQuery('#myModal').modal('hide');
 var ID_NULL = 'null';
-var device;
+var device = [];
 //Inicialization function must run every time when page is laoded
 (function() {
     //conter for iteration ID, add dropdown element 
@@ -93,7 +93,7 @@ function close(){
 }
 
 
-function getElementValue(product_id,counterElements) {
+function getElementValue(product_id, counterElements) {
     var ID_NULL = 'null';
     var ID_VYBERTE_MOZNOST = '-- Vyberte si jednu z možností --';
         var dropdown_object = document.getElementById('id-device_model-'+(counterElements));
@@ -128,7 +128,7 @@ function getElementValue(product_id,counterElements) {
                     //option.setAttribute('data-price', data[i].price);
                     dropdown_object.add(option);
                 }
-                device = data;
+                device[counterElements] = data;
             }
         }
         else {
@@ -228,13 +228,13 @@ function onInputFocus(ev) {
 
 function onInputBlur(ev) {
     if (ev.target.value.trim() === '') {
-        ev.target.parentNode.classList.remove('input-filled-sz')
+        ev.target.parentNode.classList.remove('input-filled-sz');
     }
 }
-function getDevicePrice(deviceID){
-    for (var i = 0; i < device.length; i++) {
-        if(device[i].product_id == deviceID){
-            return  device[i].price;
+function getDevicePrice(deviceID, index){
+    for (var i = 0; i < device[index].length; i++) {
+        if(device[index][i].product_id == deviceID){
+            return  device[index][i].price;
         }
     }
     return false;
@@ -250,8 +250,7 @@ function getDeviceImage(deviceID){
 //Callculating all action in form
 function showBill(devictTypVal, deviceModelVal, quantityVal, deviceID, counterElements, i, TotalPrice) {
     
-    var devicePrice = getDevicePrice(deviceID);
-    
+    var devicePrice = getDevicePrice(deviceID, i);
     if(devicePrice){
         var dropdownCountry = document.getElementById('country-sz');
         var billTransport = document.getElementById('bill-transport-sz');
@@ -427,7 +426,7 @@ function removeDropDown(lastDropdownId){
     if(jQuery('#devicePicker-'+lastDropdownId).length && lastDropdownId > 0){
         jQuery('#devicePicker-'+lastDropdownId).remove();
         jQuery('#id_contact-section-sz-'+lastDropdownId).remove();
-        
+        device.splice(lastDropdownId,lastDropdownId);
         lastDropdownId--;
     }
 
