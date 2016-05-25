@@ -296,7 +296,7 @@ function deliver_mail($email, $order_number, $mail_message)
     // If email has been process for sending, display a success message
     if (wp_mail($multiple_recipients, $subject, $mail_message, $headers)) {
     	//redirect on other web site because of re-sending form in firefox
-        //echo "<script type='text/javascript'>document.location.href='formular-uspesne-odoslany';</script>";
+        echo "<script type='text/javascript'>document.location.href='formular-uspesne-odoslany';</script>";
     } else{
     	echo 'Pri objednávke sa vyskytla chyba prosím kontaktujte administrátora';
     }

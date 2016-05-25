@@ -90,7 +90,7 @@
                                 </div>
                             </div>
                             <div class="row custom" style="margin-top: 16px;">
-                                <div id='id_contact-section-sz-0' class="contact-section-sz">
+                                <div id='id_contact-section-sz-0' class="contact-section-sz col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div id="bill-device-name-sz-0" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                     </div>
                                     <div id="bill-quantity-sz-0" class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: center;">
