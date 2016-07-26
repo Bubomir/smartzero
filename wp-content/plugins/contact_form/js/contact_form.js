@@ -116,7 +116,7 @@ function getElementValue(product_id, counterElements) {
             
             function getDevicesModel (data){
                 //remove previout option element
-                //console.log('test  ', data);
+               // console.log('test  ', data);
                 for (var i = dropdown_object.length - 1; i >= 0; i--) {
                     dropdown_object.remove(i);
                 }
@@ -241,13 +241,19 @@ function getDevicePrice(deviceID, index){
     return false;
 }
 function getDeviceImage(deviceID){
-    for (var i = 0; i < device.length; i++) {
-        if(device[i].product_id == deviceID){
-            return  device[i].image;
+    
+    for (var i = 0; i < device.length; i++) {    
+        for (var j = 0; j < device[i].length; j++) {
+            console.log('ahoj ', device[i][j]);
+            if(device[i][j].product_id == deviceID){
+                    console.log('vitaj ',device[i][j].image);
+                return  device[i][j].image;
+            }
         }
     }
     return false;
 }
+
 //Callculating all action in form
 function showBill(devictTypVal, deviceModelVal, quantityVal, deviceID, counterElements, i, TotalPrice) {
     
